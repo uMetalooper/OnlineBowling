@@ -144,12 +144,19 @@
   <ItemGroup>
     <ClCompile Include="..\..\Dependencies\glad\src\glad.c" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="ResourcesManager.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Sphere.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="ResourcesManager.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Sphere.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Resources\Shaders\Sphere.frag" />
+    <None Include="..\Resources\Shaders\Sphere.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

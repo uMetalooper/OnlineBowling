@@ -103,60 +103,14 @@ void Sphere::initRenderData()
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-	unsigned int vertexShader;
-	vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-	glCompileShader(vertexShader);
-	int  success;
-	char infoLog[512];
-	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-	if (!success)
-	{
-		glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
-	}
-
-	unsigned int fragmentShader;
-	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-	glCompileShader(fragmentShader);
-	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
-	if (!success)
-	{
-		glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
-	}
-
-	shaderProgram = glCreateProgram();
-	glAttachShader(shaderProgram, vertexShader);
-	glAttachShader(shaderProgram, fragmentShader);
-	glLinkProgram(shaderProgram);
-	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
-	if (!success)
-	{
-		glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
-		std::cout << "ERROR::SHADER::PROGRAM::LINK_FAILED\n" << infoLog << std::endl;
-	}
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
 }
 
-void Sphere::DrawSphere(glm::vec3 position)
+void Sphere::DrawSphere(Shader& shader, glm::vec3 position)
 {
-	glUseProgram(shaderProgram);
+	shader.use();
 	glm::mat4 model = glm::mat4(1.0f);
 	//model = glm::translate(model, position);
-	unsigned int transformLoc = glGetUniformLocation(shaderProgram, "model");
-	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(model));
-
-	glm::mat4 view = glm::mat4(1.0f);
-	transformLoc = glGetUniformLocation(shaderProgram, "view");
-	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(view));
-
-	glm::mat4 projection = glm::mat4(1.0f);
-	transformLoc = glGetUniformLocation(shaderProgram, "projection");
-	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(projection));
+	shader.setMat4("model", model);
 
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, (unsigned int)indices.size(), GL_UNSIGNED_INT, (void*)0);

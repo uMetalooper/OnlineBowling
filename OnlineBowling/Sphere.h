@@ -8,10 +8,13 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 
+#include "Shader.h"
+
 class Sphere
 {
 public:
-	Sphere() : radius(1.0f), sectorCount(36), stackCount(18)
+	Sphere() 
+		: radius(1.0f), sectorCount(36), stackCount(18)
 	{
 		buildVertices();
 		initRenderData();
@@ -19,10 +22,9 @@ public:
 
 	~Sphere()
 	{
-
 	}
 
-	void DrawSphere(glm::vec3 position);
+	void DrawSphere(Shader& shader, glm::vec3 position);
 
 	uint32_t getVertexCount() const { return (uint32_t)vertices.size() / 3; }
 	uint32_t getInterleavedVertexSize() const { return (uint32_t)interleavedVertices.size() * sizeof(float); }
@@ -50,28 +52,5 @@ private:
 	std::vector<float> interleavedVertices;
 
 	unsigned int VAO;
-
-	unsigned int shaderProgram;
-	const char* vertexShaderSource = "#version 330 core\n"
-		"layout (location = 0) in vec3 aPos;\n"
-		"layout (location = 1) in vec3 aNormal;\n"
-		"layout (location = 2) in vec2 aTexCoord;\n"
-		"out vec2 TexCoords;\n"
-		"uniform mat4 model"
-		"uniform mat4 view"
-		"uniform mat4 projection"
-		"void main()\n"
-		"{\n"
-		"   gl_Position = projection * view * model * vec4(aPos, 1.0);\n"
-		"   TexCoords = aTexCoord;\n"
-		"}\0";
-
-	const char* fragmentShaderSource = "#version 330 core\n"
-		"in vec2 TexCoords;\n"
-		"out vec4 FragColor;\n"
-		"void main()\n"
-		"{\n"
-		"   FragColor = vec4(1.0f, 1.0f, 1.0f, 1.0f);\n"
-		"}\n\0";
 };
 

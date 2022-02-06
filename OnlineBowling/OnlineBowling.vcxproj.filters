@@ -27,6 +27,9 @@
     <ClCompile Include="Shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ResourcesManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sphere.h">
@@ -35,5 +38,19 @@
     <ClInclude Include="Shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ResourcesManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Resources\Shaders\Sphere.frag">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Resources\Shaders\Sphere.vert">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
