@@ -45,6 +45,12 @@ public:
         GLuint loc = glGetUniformLocation(ID, name.c_str());
         glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(matrix));
     }
+    // ------------------------------------------------------------------------
+    void setVec3(const std::string& name, glm::vec3 vec) const
+    {
+        GLuint loc = glGetUniformLocation(ID, name.c_str());
+        glUniform3f(loc, vec.x, vec.y, vec.z);
+    }
 private:
 	void checkCompileErrors(unsigned int shader, std::string type);
 	unsigned int ID;

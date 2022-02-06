@@ -2,6 +2,8 @@
 
 void Sphere::buildVertices()
 {
+	const unsigned int sectorCount = 36;
+	const unsigned int stackCount = 18;
 	float x, y, z, xy; // vertex position
 	float nx, ny, nz;
 	float s, t;
@@ -13,8 +15,8 @@ void Sphere::buildVertices()
 	for (int i = 0; i < stackCount; i++)
 	{
 		stackAngle = glm::pi<float>() / 2 - i * stackStep;
-		xy = radius * glm::cos(stackAngle);
-		z = radius * glm::sin(stackAngle);
+		xy = 1.0f * glm::cos(stackAngle);
+		z = 1.0f * glm::sin(stackAngle);
 		for (int j = 0; j < sectorCount; j++)
 		{
 			sectorAngle = j * sectorStep;
@@ -24,9 +26,9 @@ void Sphere::buildVertices()
 			addVertex(x, y, z);
 
 			// normalize normal vector
-			nx = x / radius;
-			ny = y / radius;
-			nz = z / radius;
+			nx = x / 1.0f;
+			ny = y / 1.0f;
+			nz = z / 1.0f;
 			addNormal(nx, ny, nz);
 
 			// add texture coordinate
@@ -62,86 +64,25 @@ void Sphere::buildVertices()
 		}
 	}
 
-	for (size_t i = 0; i < getVertexCount(); i++)
-	{
-		interleavedVertices.push_back(vertices[3 * i]);
-		interleavedVertices.push_back(vertices[3 * i + 1]);
-		interleavedVertices.push_back(vertices[3 * i + 2]);
-
-		interleavedVertices.push_back(normals[3 * i]);
-		interleavedVertices.push_back(normals[3 * i + 1]);
-		interleavedVertices.push_back(normals[3 * i + 2]);
-
-		interleavedVertices.push_back(texCoords[2 * i]);
-		interleavedVertices.push_back(texCoords[2 * i + 1]);
-	}
+	buildInterleavedVertices();
 }
 
-void Sphere::initRenderData()
-{
-	unsigned int VBO, EBO;
 
-	glGenVertexArrays(1, &VAO);
-	glGenBuffers(1, &VBO);
-	glGenBuffers(1, &EBO);
 
-	glBindVertexArray(VAO);
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, getInterleavedVertexSize(), interleavedVertices.data(), GL_STATIC_DRAW);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, getIndexSize(), indices.data(), GL_STATIC_DRAW);
-
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-
-	// unbind
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindVertexArray(0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-}
-
-void Sphere::DrawSphere(Shader& shader, glm::vec3 position)
+void Sphere::Draw(Shader& shader)
 {
 	shader.use();
 	glm::mat4 model = glm::mat4(1.0f);
-	//model = glm::translate(model, position);
+	model = glm::translate(model, position);
+
+	// scale
+	model = glm::scale(model, glm::vec3(radius*2));
 	shader.setMat4("model", model);
+	shader.setVec3("color", color);
 
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, (unsigned int)indices.size(), GL_UNSIGNED_INT, (void*)0);
 
 	// unbind
 	glBindVertexArray(0);
-}
-
-void Sphere::addVertex(float x, float y, float z)
-{
-	vertices.push_back(x);
-	vertices.push_back(y);
-	vertices.push_back(z);
-}
-
-void Sphere::addNormal(float nx, float ny, float nz)
-{
-	normals.push_back(nx);
-	normals.push_back(ny);
-	normals.push_back(nz);
-}
-
-void Sphere::addTexCoord(float s, float t)
-{
-	texCoords.push_back(s);
-	texCoords.push_back(t);
-}
-
-void Sphere::addIndices(unsigned int i1, unsigned int i2, unsigned int i3)
-{
-	indices.push_back(i1);
-	indices.push_back(i2);
-	indices.push_back(i3);
 }

@@ -9,12 +9,13 @@
 #include <iostream>
 
 #include "Shader.h"
+#include "Drawable.h"
 
-class Sphere
+class Sphere : public Drawable
 {
 public:
 	Sphere() 
-		: radius(1.0f), sectorCount(36), stackCount(18)
+		: color(0.0f)
 	{
 		buildVertices();
 		initRenderData();
@@ -24,33 +25,18 @@ public:
 	{
 	}
 
-	void DrawSphere(Shader& shader, glm::vec3 position);
+	void setPosition(glm::vec3 pos) { position = pos; }
+	void setColor(glm::vec3 c) { color = c; }
+	void setRadius(float r) { radius = r; }
 
-	uint32_t getVertexCount() const { return (uint32_t)vertices.size() / 3; }
-	uint32_t getInterleavedVertexSize() const { return (uint32_t)interleavedVertices.size() * sizeof(float); }
-	uint32_t getIndexSize() const { return (uint32_t)indices.size() * sizeof(uint32_t); }
+	void Draw(Shader& shader);
 
 private:
 	void buildVertices();
-	void initRenderData();
 
-	void addVertex(float x, float y, float z);
-	void addNormal(float nx, float ny, float nz);
-	void addTexCoord(float s, float t);
-
-	void addIndices(unsigned int i1, unsigned int i2, unsigned int i3);
+	glm::vec3 position;
+	glm::vec3 color;
 
 	float radius;
-	int sectorCount;
-	int stackCount;
-
-	std::vector<float> vertices;
-	std::vector<float> normals;
-	std::vector<float> texCoords;
-	std::vector<unsigned int> indices;
-
-	std::vector<float> interleavedVertices;
-
-	unsigned int VAO;
 };
 
