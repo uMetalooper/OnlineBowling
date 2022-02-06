@@ -1,5 +1,4 @@
 #include "Ball.h"
-#include "glm_vec_helper.h"
 #include <glm/gtx/norm.hpp>
 
 #include <iostream>

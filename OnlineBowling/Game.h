@@ -3,6 +3,12 @@
 #include "Floor.h"
 #include "Shader.h"
 #include "ResourcesManager.h"
+#include "glm_vec_helper.h"
+
+constexpr float ALLEY_WIDTH = 1.0f; // 1 meter wide
+constexpr float ALLEY_LENGTH = 18.288f; // 18.288 meters long
+
+constexpr float BALL_RADIUS = 0.05;
 
 class Game
 {
@@ -35,5 +41,10 @@ private:
 	Floor floor;
 
 	Shader shader;
+
+	void ResetBall();
+	void ResetPins();
+
+	bool CheckCollisions(Ball& one, Ball& two);
 };
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "Sphere.h"
+#include "glm_vec_helper.h"
 
 class Ball
 {
@@ -22,8 +23,12 @@ public:
 
 	void setVelocity(glm::vec2 v) { velocity = v; }
 	void setPosition(glm::vec2 pos) { position = pos; }
+	void setColor(glm::vec3 color) { renderer.setColor(color); }
 
 	void info();
+
+	glm::vec2 getPosition() { return position; }
+	glm::vec2 getVelocity() { return velocity; }
 	
 private:
 	Sphere renderer;

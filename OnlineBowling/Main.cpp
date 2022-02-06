@@ -17,6 +17,10 @@
 
 Camera cam(glm::vec3(0.0f, 0.0f, 20.0f));
 
+glm::vec3 camPos(0.0f, -3.0f, 2.0f);
+glm::vec3 target(0.0f, 1.0f, 0.0f);
+glm::vec3 up(0.0f, 0.0f, 1.0f);
+
 float deltaTime = 0.0f;	// Time between current frame and last frame
 float lastFrame = 0.0f; // Time of last frame
 
@@ -89,7 +93,7 @@ int main()
 		// processing input
 		processInput(window);
 		if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS)
-			game.applyImpulse(glm::vec2(0.0f, 2.0f));
+			game.applyImpulse(glm::vec2(0.0f, 4.0f));
 
 		// update game state
 		game.Update(deltaTime);
@@ -99,10 +103,12 @@ int main()
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		// DoCamera
-		game.setCamera(cam.GetViewMatrix());
+		glm::mat4 view = glm::lookAt(camPos, target, up);
+		//game.setCamera(cam.GetViewMatrix());
+		game.setCamera(view);
 		
 		// Game Rendering
-		game.setFloorLength(fsize);
+		//game.setFloorLength(fsize);
 		game.Render();
 
 		// UI Rendering
