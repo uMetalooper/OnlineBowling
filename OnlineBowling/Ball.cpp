@@ -8,12 +8,12 @@ constexpr float g = 9.8f;
 
 void Ball::Update(float dt)
 {
-	if (Vec2::Magnitude(velocity) <= 0.000001f) return;
+	if (glm::length(velocity) <= 0.000001f) return;
 	// apply friction
-	glm::vec2 acceleration = -Vec2::Normalize(velocity);
+	glm::vec2 acceleration = -glm::normalize(velocity);
 	acceleration = acceleration * fricCoeff * g;
 	glm::vec2 velocityChange = acceleration * dt;
-	if (Vec2::Magnitude(velocityChange) > Vec2::Magnitude(velocity)) velocity = glm::vec2(0.0f);
+	if (glm::length(velocityChange) > glm::length(velocity)) velocity = glm::vec2(0.0f);
 	else velocity += velocityChange;
 
 	// update position

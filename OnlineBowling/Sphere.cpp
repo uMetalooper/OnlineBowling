@@ -76,7 +76,7 @@ void Sphere::Draw(Shader& shader)
 	model = glm::translate(model, position);
 
 	// scale
-	model = glm::scale(model, glm::vec3(radius*2));
+	model = glm::scale(model, glm::vec3(radius));
 	shader.setMat4("model", model);
 	shader.setVec3("color", color);
 

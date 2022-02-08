@@ -17,8 +17,8 @@
 
 Camera cam(glm::vec3(0.0f, 0.0f, 20.0f));
 
-glm::vec3 camPos(0.0f, -3.0f, 2.0f);
-glm::vec3 target(0.0f, 1.0f, 0.0f);
+glm::vec3 camPos(0.0f, 15.0f, 2.0f);
+glm::vec3 target(0.0f, 19.0f, 0.0f);
 glm::vec3 up(0.0f, 0.0f, 1.0f);
 
 float deltaTime = 0.0f;	// Time between current frame and last frame
@@ -93,7 +93,7 @@ int main()
 		// processing input
 		processInput(window);
 		if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS)
-			game.applyImpulse(glm::vec2(0.0f, 4.0f));
+			game.applyImpulse(glm::vec2(0.0f, 8.0f));
 
 		// update game state
 		game.Update(deltaTime);

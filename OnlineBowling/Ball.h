@@ -1,6 +1,5 @@
 #pragma once
 #include "Sphere.h"
-#include "glm_vec_helper.h"
 
 class Ball
 {
@@ -9,7 +8,7 @@ public:
 	{
 		position = glm::vec2(0.0f);
 		velocity = glm::vec2(0.0f);
-		radius = 0.05;
+		radius = 0.1;
 	}
 
 	void Update(float dt);

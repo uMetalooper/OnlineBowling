@@ -31,7 +31,7 @@ void Game::ResetPins()
 	constexpr glm::vec3 white = glm::vec3(1.0f);
 
 	constexpr float sep = 0.3;
-	constexpr float rowSep = 0.3 * 0.866;
+	constexpr float rowSep = sep * 0.866;
 	for (int i = 0; i < 10; i++)
 	{
 		pins[i].setColor(white);
@@ -43,22 +43,49 @@ void Game::ResetPins()
 			row++;
 		}
 		float x = (((row - 1) * sep) / 2.0f) - (sep * (row - rowIndex));
-		float y = rowSep * (row - 1);
+		float y = rowSep * (row - 1) + ALLEY_LENGTH - sep * 5;
 		pins[i].setPosition(glm::vec2(x, y));
 	}
 }
 
 bool Game::CheckCollisions(Ball& one, Ball& two)
 {
-	glm::vec2 relPosn = one.getPosition() - two.getPosition();
-	float dist = Vec2::Magnitude(relPosn);
-	glm::vec2 relPosnNorm = Vec2::Normalize(relPosn);
+	glm::vec2 pos1 = one.getPosition();
+	glm::vec2 pos2 = two.getPosition();
+
+	float dist = glm::distance(pos1, pos2);
+	if (dist > BALL_RADIUS * 2) return false;
+
+	glm::vec2 relPosn = pos1 - pos2;
 	glm::vec2 relVelocity = one.getVelocity() - two.getVelocity();
 
 	// if moving apart
-	if (glm::dot(relVelocity, relPosnNorm) >= 0.0f) return false;
-	if (dist > BALL_RADIUS * 2) return false;
+	if (glm::dot(relVelocity, relPosn) >= 0.0f) return false;
 	return true;
+}
+
+void Game::ApplyCollision(Ball& one, Ball& two)
+{
+	//find direction from other ball to this ball
+	glm::vec2 relDir = glm::normalize(one.getPosition() - two.getPosition());
+
+	//split velocities into 2 parts:  one component perpendicular, and one parallel to 
+	//the collision plane, for both balls
+	//(NB the collision plane is defined by the point of contact and the contact normal)
+	float perpV = glm::dot(one.getVelocity(), relDir);
+	float perpV2 = glm::dot(two.getVelocity(), relDir);
+	glm::vec2 parallelV = one.getVelocity() - (relDir * perpV);
+	glm::vec2 parallelV2 = two.getVelocity() - (relDir * perpV2);
+
+	//Calculate new perpendicluar components:
+	//v1 = (2*m2 / m1+m2)*u2 + ((m1 - m2)/(m1+m2))*u1;
+	//v2 = (2*m1 / m1+m2)*u1 + ((m2 - m1)/(m1+m2))*u2;
+	float perpVNew = perpV2;
+	float perpVNew2 = perpV;
+
+	//find new velocities by adding unchanged parallel component to new perpendicluar component
+	one.setVelocity(parallelV + (relDir * perpVNew));
+	two.setVelocity(parallelV2 + (relDir * perpVNew2));
 }
 
 void Game::Update(float dt)
@@ -69,28 +96,18 @@ void Game::Update(float dt)
 		bool collision = CheckCollisions(ball, pins[i]);
 		if (collision)
 		{
-			//find direction from other ball to this ball
-			glm::vec2 relDir = Vec2::Normalize(ball.getPosition() - pins[i].getPosition());
-
-			//split velocities into 2 parts:  one component perpendicular, and one parallel to 
-			//the collision plane, for both balls
-			//(NB the collision plane is defined by the point of contact and the contact normal)
-			float perpV = glm::dot(ball.getVelocity(), relDir);
-			float perpV2 = glm::dot(pins[i].getVelocity(), relDir);
-			glm::vec2 parallelV = ball.getVelocity() - (relDir * perpV);
-			glm::vec2 parallelV2 = pins[i].getVelocity() - (relDir * perpV2);
-
-			//Calculate new perpendicluar components:
-			//v1 = (2*m2 / m1+m2)*u2 + ((m1 - m2)/(m1+m2))*u1;
-			//v2 = (2*m1 / m1+m2)*u1 + ((m2 - m1)/(m1+m2))*u2;
-			float perpVNew = perpV2;
-			float perpVNew2 = perpV;
-
-			//find new velocities by adding unchanged parallel component to new perpendicluar component
-			ball.setVelocity(parallelV + (relDir * perpVNew));
-			pins[i].setVelocity(parallelV2 + (relDir * perpVNew2));
+			ApplyCollision(ball, pins[i]);
+		}
+		for (int j = i + 1; j < 10; j++)
+		{
+			bool rs = CheckCollisions(pins[i], pins[j]);
+			if (rs) 
+			{
+				ApplyCollision(pins[i], pins[j]);
+			}
 		}
 	}
+
 
 	ball.Update(dt);
 	for (int i = 0; i < 10; i++)
