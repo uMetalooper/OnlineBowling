@@ -22,6 +22,7 @@ public:
 	void applyImpulse(glm::vec2 v)
 	{
 		ball.setVelocity(v);
+		ballThrown = true;
 	}
 
 	void setFloorLength(const float& length)
@@ -33,9 +34,12 @@ public:
 
 	void Render();
 
-private:
 	Ball ball;
+private:
+	bool ballThrown;
 	Ball pins[10];
+	bool touchedIndex[10];
+	int removedIndex;
 
 	Floor floor;
 

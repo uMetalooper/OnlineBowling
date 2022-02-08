@@ -24,17 +24,21 @@ void Game::ResetBall()
 	ball.setColor(green);
 	ball.setPosition(glm::vec2(0.0f, -1.0f));
 	ball.setVelocity(glm::vec2(0.0f));
+	ballThrown = false;
 }
 
 void Game::ResetPins()
 {
 	constexpr glm::vec3 white = glm::vec3(1.0f);
 
-	constexpr float sep = 0.3;
+	constexpr float sep = 0.25;
 	constexpr float rowSep = sep * 0.866;
 	for (int i = 0; i < 10; i++)
 	{
+		// reset color
 		pins[i].setColor(white);
+
+		// reset position
 		int row = 1;
 		int rowIndex = i + 1;
 		while (rowIndex > row)
@@ -45,7 +49,14 @@ void Game::ResetPins()
 		float x = (((row - 1) * sep) / 2.0f) - (sep * (row - rowIndex));
 		float y = rowSep * (row - 1) + ALLEY_LENGTH - sep * 5;
 		pins[i].setPosition(glm::vec2(x, y));
+
+		// reset state
+		for (int i = 0; i < 10; i++)
+		{
+			touchedIndex[i] = false;
+		}
 	}
+	removedIndex = 0;
 }
 
 bool Game::CheckCollisions(Ball& one, Ball& two)
@@ -97,31 +108,67 @@ void Game::Update(float dt)
 		if (collision)
 		{
 			ApplyCollision(ball, pins[i]);
+			touchedIndex[i] = true;
 		}
 		for (int j = i + 1; j < 10; j++)
 		{
 			bool rs = CheckCollisions(pins[i], pins[j]);
-			if (rs) 
+			if (rs)
 			{
 				ApplyCollision(pins[i], pins[j]);
+				touchedIndex[i] = true;
+				touchedIndex[j] = true;
 			}
 		}
 	}
 
-
 	ball.Update(dt);
 	for (int i = 0; i < 10; i++)
 	{
-		pins[i].Update(dt);
+		if (pins[i].GetActive())
+		{
+			pins[i].Update(dt);
+			glm::vec2 pinPos = pins[i].getPosition();
+			// if this pin is moving out of bound OR has been touched and stop moving
+			if (pinPos.x > ALLEY_WIDTH / 2.0f || pinPos.x < -ALLEY_WIDTH / 2.0f || pinPos.y > ALLEY_LENGTH
+				|| (touchedIndex[i] && pins[i].IsStop()))
+			{
+				int rowIndex = removedIndex / 3;
+				int colIndex = removedIndex % 3;
+				pins[i].SetActive(false);
+				pins[i].setPosition(glm::vec2((colIndex - 1) * 3 * BALL_RADIUS, ALLEY_LENGTH + (rowIndex + 1) * 3 * BALL_RADIUS));
+				pins[i].setVelocity(glm::vec2(0.0f));
+				removedIndex++;
+			}
+		}
 	}
+	if (!ballThrown)
+	{
+		return;
+	}
+	for (int i = 0; i < 10; i++)
+	{
+		if (!pins[i].IsStop() && touchedIndex[i])
+		{
+			return;
+		}
+	}
+	if (!ball.IsStop())
+	{
+		return;
+	}
+	ResetBall();
 }
 
 void Game::Render()
 {
 	ball.Draw(shader);
-	floor.Draw(shader);
 	for (int i = 0; i < 10; i++)
 	{
-		pins[i].Draw(shader);
+		if (true)
+		{
+			pins[i].Draw(shader);
+		}
 	}
+	floor.Draw(shader);
 }

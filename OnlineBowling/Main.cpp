@@ -17,8 +17,8 @@
 
 Camera cam(glm::vec3(0.0f, 0.0f, 20.0f));
 
-glm::vec3 camPos(0.0f, 15.0f, 2.0f);
-glm::vec3 target(0.0f, 19.0f, 0.0f);
+glm::vec3 camPos(0.0f, -3.0f, 2.0f);
+glm::vec3 target(0.0f, 1.0f, 0.0f);
 glm::vec3 up(0.0f, 0.0f, 1.0f);
 
 float deltaTime = 0.0f;	// Time between current frame and last frame
@@ -103,7 +103,13 @@ int main()
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		// DoCamera
-		glm::mat4 view = glm::lookAt(camPos, target, up);
+		glm::vec2 ballPos = game.ball.getPosition();
+		//glm::mat4 view = glm::lookAt(camPos, target, up);
+		glm::mat4 view = glm::lookAt(
+			glm::vec3(ballPos, 0.0f) + glm::vec3(0.0f, -2.0f, 2.0f),
+			glm::vec3(ballPos, 0.0f) + glm::vec3(0.0f, 2.0f, 0.0f),
+			up
+		);
 		//game.setCamera(cam.GetViewMatrix());
 		game.setCamera(view);
 		
