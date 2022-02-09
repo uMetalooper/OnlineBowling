@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OnlineBowling", "OnlineBowling\OnlineBowling.vcxproj", "{ED78C4B0-EBB5-4E5B-9FEB-5F00B3C31171}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OnlineBowlingServer", "OnlineBowlingServer\OnlineBowlingServer.vcxproj", "{36463A74-2C10-4FE6-9DA2-847BC0EAC760}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,14 @@ Global
 		{ED78C4B0-EBB5-4E5B-9FEB-5F00B3C31171}.Release|x64.Build.0 = Release|x64
 		{ED78C4B0-EBB5-4E5B-9FEB-5F00B3C31171}.Release|x86.ActiveCfg = Release|Win32
 		{ED78C4B0-EBB5-4E5B-9FEB-5F00B3C31171}.Release|x86.Build.0 = Release|Win32
+		{36463A74-2C10-4FE6-9DA2-847BC0EAC760}.Debug|x64.ActiveCfg = Debug|x64
+		{36463A74-2C10-4FE6-9DA2-847BC0EAC760}.Debug|x64.Build.0 = Debug|x64
+		{36463A74-2C10-4FE6-9DA2-847BC0EAC760}.Debug|x86.ActiveCfg = Debug|Win32
+		{36463A74-2C10-4FE6-9DA2-847BC0EAC760}.Debug|x86.Build.0 = Debug|Win32
+		{36463A74-2C10-4FE6-9DA2-847BC0EAC760}.Release|x64.ActiveCfg = Release|x64
+		{36463A74-2C10-4FE6-9DA2-847BC0EAC760}.Release|x64.Build.0 = Release|x64
+		{36463A74-2C10-4FE6-9DA2-847BC0EAC760}.Release|x86.ActiveCfg = Release|Win32
+		{36463A74-2C10-4FE6-9DA2-847BC0EAC760}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

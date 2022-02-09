@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include "Game.h"
-#include "Camera.h"
 
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
@@ -14,12 +13,6 @@
 
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
-
-Camera cam(glm::vec3(0.0f, 0.0f, 20.0f));
-
-glm::vec3 camPos(0.0f, -3.0f, 2.0f);
-glm::vec3 target(0.0f, 1.0f, 0.0f);
-glm::vec3 up(0.0f, 0.0f, 1.0f);
 
 float deltaTime = 0.0f;	// Time between current frame and last frame
 float lastFrame = 0.0f; // Time of last frame
@@ -63,8 +56,8 @@ int main()
 	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
 	// Setup Dear ImGui style
-	ImGui::StyleColorsDark();
-	//ImGui::StyleColorsClassic();
+	//ImGui::StyleColorsDark();
+	ImGui::StyleColorsClassic();
 
 	// Setup Platform/Renderer backends
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
@@ -82,8 +75,8 @@ int main()
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 		{
-			ImGui::Begin("Game parameters");
-			ImGui::SliderFloat("Floor length", &fsize, 0.0f, 10.0f);
+			ImGui::Begin("Game info");
+			ImGui::Text("Player index: %d", game.getPlayerIndex());
 			ImGui::End();
 		}
 
@@ -102,19 +95,8 @@ int main()
 		ImGui::Render();
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		// DoCamera
-		glm::vec2 ballPos = game.ball.getPosition();
-		//glm::mat4 view = glm::lookAt(camPos, target, up);
-		glm::mat4 view = glm::lookAt(
-			glm::vec3(ballPos, 0.0f) + glm::vec3(0.0f, -2.0f, 2.0f),
-			glm::vec3(ballPos, 0.0f) + glm::vec3(0.0f, 2.0f, 0.0f),
-			up
-		);
-		//game.setCamera(cam.GetViewMatrix());
-		game.setCamera(view);
 		
 		// Game Rendering
-		//game.setFloorLength(fsize);
 		game.Render();
 
 		// UI Rendering
@@ -135,16 +117,6 @@ void processInput(GLFWwindow* window)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
-
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		cam.ProcessKeyboard(Camera_Movement::FORWARD, deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		cam.ProcessKeyboard(Camera_Movement::BACKWARD, deltaTime);
-
-	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		cam.ProcessKeyboard(Camera_Movement::LEFT, deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		cam.ProcessKeyboard(Camera_Movement::RIGHT, deltaTime);
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)

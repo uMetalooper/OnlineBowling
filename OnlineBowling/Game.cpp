@@ -16,6 +16,12 @@ Game::Game()
 
 	ResetBall();
 	ResetPins();
+
+	mainCamera = Camera(ball.getPosition3d());
+	setCamera(mainCamera.calcViewMatrix());
+
+	playerIndex = 0;
+	timer = 0.0f;
 }
 
 void Game::ResetBall()
@@ -24,6 +30,9 @@ void Game::ResetBall()
 	ball.setColor(green);
 	ball.setPosition(glm::vec2(0.0f, -1.0f));
 	ball.setVelocity(glm::vec2(0.0f));
+
+	mainCamera.Update(ball.getPosition3d());
+	setCamera(mainCamera.calcViewMatrix());
 	ballThrown = false;
 }
 
@@ -51,10 +60,8 @@ void Game::ResetPins()
 		pins[i].setPosition(glm::vec2(x, y));
 
 		// reset state
-		for (int i = 0; i < 10; i++)
-		{
-			touchedIndex[i] = false;
-		}
+		touchedIndex[i] = false;
+		pins[i].SetActive(true);
 	}
 	removedIndex = 0;
 }
@@ -101,6 +108,14 @@ void Game::ApplyCollision(Ball& one, Ball& two)
 
 void Game::Update(float dt)
 {
+	// if the ball has not thrown yet, just update the ball's position
+	if (!ballThrown)
+	{
+		timer += dt;
+		ball.setPosition(glm::vec2(glm::sin(timer) / 2.0f, -1.0f));
+		return;
+	}
+
 	// check collisions
 	for (int i = 0; i < 10; i++)
 	{
@@ -123,6 +138,9 @@ void Game::Update(float dt)
 	}
 
 	ball.Update(dt);
+	mainCamera.Update(ball.getPosition3d());
+	setCamera(mainCamera.calcViewMatrix());
+
 	for (int i = 0; i < 10; i++)
 	{
 		if (pins[i].GetActive())
@@ -130,21 +148,22 @@ void Game::Update(float dt)
 			pins[i].Update(dt);
 			glm::vec2 pinPos = pins[i].getPosition();
 			// if this pin is moving out of bound OR has been touched and stop moving
-			if (pinPos.x > ALLEY_WIDTH / 2.0f || pinPos.x < -ALLEY_WIDTH / 2.0f || pinPos.y > ALLEY_LENGTH
-				|| (touchedIndex[i] && pins[i].IsStop()))
+			if (CheckBound(pins[i])	|| (touchedIndex[i] && pins[i].IsStop()))
 			{
 				int rowIndex = removedIndex / 3;
 				int colIndex = removedIndex % 3;
 				pins[i].SetActive(false);
+				pins[i].setColor(glm::vec3(0.0f));
 				pins[i].setPosition(glm::vec2((colIndex - 1) * 3 * BALL_RADIUS, ALLEY_LENGTH + (rowIndex + 1) * 3 * BALL_RADIUS));
 				pins[i].setVelocity(glm::vec2(0.0f));
 				removedIndex++;
 			}
 		}
 	}
-	if (!ballThrown)
+	
+	if (CheckBound(ball))
 	{
-		return;
+		ball.setVelocity(glm::vec2(0.0f));
 	}
 	for (int i = 0; i < 10; i++)
 	{
@@ -158,6 +177,17 @@ void Game::Update(float dt)
 		return;
 	}
 	ResetBall();
+	playerIndex++;
+	if (playerIndex % 2 == 0)
+	{
+		// each player's second turn has ended
+		ResetPins();
+		if (playerIndex % 4 == 0)
+		{
+			// one frame of 2 players has ended
+			playerIndex = 0;
+		}
+	}
 }
 
 void Game::Render()

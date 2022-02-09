@@ -28,6 +28,7 @@ public:
 	void info();
 
 	glm::vec2 getPosition() { return position; }
+	glm::vec3 getPosition3d() { return glm::vec3(position, radius); }
 	glm::vec2 getVelocity() { return velocity; }
 	
 	void SetActive(bool s) { activeSelf = s; }
