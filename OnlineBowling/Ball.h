@@ -1,48 +1,60 @@
-#pragma once
-#include "Sphere.h"
-
-class Ball
+class Ball : public GameObject
 {
 public:
-	Ball()
+	CLASS_IDENTIFICATION('BALL', GameObject)
+
+	enum EBallReplicationState
 	{
-		position = glm::vec2(0.0f);
-		velocity = glm::vec2(0.0f);
-		radius = 0.1;
+		EBRS_Pose = 1 << 0,
+		EBRS_Color = 1 << 1,
+		EBRS_PlayerId = 1 << 2,
+		EBRS_Health = 1 << 3,
+
+		EBRS_AllState = EBRS_Pose | EBRS_Color | EBRS_PlayerId | EBRS_Health
+	};
+
+	Ball() : GameObject()
+	{
 		activeSelf = true;
 	}
 
-	void Update(float dt);
+	virtual	Ball* GetAsBall() override { return this; }
 
-	void Draw(Shader& shader)
+	static	GameObject* StaticCreate() { return new Ball(); }
+
+	virtual uint32_t GetAllStateMask()	const override { return EBRS_AllState; }
+
+	virtual void Update() override;
+
+	/*void Draw(Shader& shader)
 	{
 		renderer.setPosition(glm::vec3(position, radius));
 		renderer.setRadius(radius);
 		renderer.Draw(shader);
-	}
+	}*/
 
-	void setVelocity(glm::vec2 v) { velocity = v; }
-	void setPosition(glm::vec2 pos) { position = pos; }
-	void setColor(glm::vec3 color) { renderer.setColor(color); }
-
-	void info();
-
-	glm::vec2 getPosition() { return position; }
-	glm::vec3 getPosition3d() { return glm::vec3(position, radius); }
-	glm::vec2 getVelocity() { return velocity; }
-	
 	void SetActive(bool s) { activeSelf = s; }
 	bool GetActive() { return activeSelf; }
 
-	bool IsStop() { return glm::length(velocity) < 0.000001f; }
+	bool IsStop() { return glm::length(mVelocity) < 0.000001f; }
+
+	void ProcessInput(float inDeltaTime, const InputState& inInputState);
+
+	void		SetPlayerId(uint32_t inPlayerId) { mPlayerId = inPlayerId; }
+	uint32_t	GetPlayerId()						const { return mPlayerId; }
+
+	void			SetVelocity(const Vector3& inVelocity) { mVelocity = inVelocity; }
+	const Vector3&  GetVelocity()						const { return mVelocity; }
+
+	virtual uint32_t	Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) const override;
 
 private:
+	Vector3				mVelocity;
 	bool activeSelf;
-	Sphere renderer;
 
-	glm::vec2 position;
-	glm::vec2 velocity;
-	float radius;
-	float mass;
+	uint32_t			mPlayerId;
+protected:
+	bool mIsShooting;
 };
 
+typedef shared_ptr< Ball >	BallPtr;

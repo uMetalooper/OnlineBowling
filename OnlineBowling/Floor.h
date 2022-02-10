@@ -1,26 +1,30 @@
-#pragma once
-#include <glm/glm.hpp>
-#include "Plane.h"
-class Floor
+class Floor : public GameObject
 {
 public:
+	CLASS_IDENTIFICATION('FLOO', GameObject)
+
+	enum EFloorReplicationState
+	{
+		EFRS_Pose = 1 << 0,
+		EFRS_Color = 1 << 1,
+
+		EFRS_AllState = EFRS_Pose | EFRS_Color
+	};
+
 	Floor()
 	{
-		color = glm::vec3(1.0f, 0.0f, 0.0f);
-		size = glm::vec2(1.0f);
+		
 	}
 
-	void Draw(Shader& shader)
-	{
-		renderer.setCenter(center);
-		renderer.setSize(size);
-		renderer.setColor(color);
-		renderer.Draw(shader);
-	}
+	static	GameObject* StaticCreate() { return new Floor(); }
+	virtual uint32_t	GetAllStateMask()	const override { return EFRS_AllState; }
 
-	Plane renderer;
-	glm::vec3 center;
-	glm::vec2 size;
-	glm::vec3 color;
+	void			SetSize(const Vector3& inSize) { mSize = inSize; }
+	const Vector3&  GetSize() const { return mSize; }
+
+	virtual uint32_t	Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) const override;
+
+private:
+	Vector3 mSize;
 };
 

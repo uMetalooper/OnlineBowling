@@ -1,18 +1,9 @@
-#include <glad/glad.h>
-#include <GLFW/glfw3.h>
-
-#include <iostream>
-#include "Game.h"
-
-#include "imgui.h"
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
-
+#include "OnlineBowlingPCH.h"
+#define WINDOW_WIDTH 800
+#define WINDOW_HEIGHT 600
 // run without console window
 //#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
 
-#define WINDOW_WIDTH 800
-#define WINDOW_HEIGHT 600
 
 float deltaTime = 0.0f;	// Time between current frame and last frame
 float lastFrame = 0.0f; // Time of last frame
@@ -64,7 +55,7 @@ int main()
 	const char* glsl_version = "#version 330";
 	ImGui_ImplOpenGL3_Init(glsl_version);
 	
-	Game game;
+	InputManager::sInstance->StaticInit();
 	float fsize = 1.0f;
 	// main loop
 	while (!glfwWindowShouldClose(window))
@@ -74,22 +65,16 @@ int main()
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
-		{
-			ImGui::Begin("Game info");
-			ImGui::Text("Player index: %d", game.getPlayerIndex());
-			ImGui::End();
-		}
 
 		float currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 		// processing input
 		processInput(window);
-		if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS)
-			game.applyImpulse(glm::vec2(0.0f, 8.0f));
 
 		// update game state
-		game.Update(deltaTime);
+		Timing::sInstance.Update();
+		InputManager::sInstance->Update();
 
 		// rendering
 		ImGui::Render();
@@ -97,7 +82,6 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
 		// Game Rendering
-		game.Render();
 
 		// UI Rendering
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -117,6 +101,31 @@ void processInput(GLFWwindow* window)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
+
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+	{
+		InputManager::sInstance->HandleInput(EIA_Pressed, 'a');
+	}
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_RELEASE)
+	{
+		InputManager::sInstance->HandleInput(EIA_Released, 'a');
+	}
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+	{
+		InputManager::sInstance->HandleInput(EIA_Pressed, 'd');
+	}
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_RELEASE)
+	{
+		InputManager::sInstance->HandleInput(EIA_Released, 'd');
+	}
+	if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS)
+	{
+		InputManager::sInstance->HandleInput(EIA_Pressed, 'k');
+	}
+	if (glfwGetKey(window, GLFW_KEY_K) == GLFW_RELEASE)
+	{
+		InputManager::sInstance->HandleInput(EIA_Released, 'k');
+	}
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)

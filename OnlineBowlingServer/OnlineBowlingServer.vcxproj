@@ -116,11 +116,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>..\SDKs\Includes;..\OnlineBowling;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>OnlineBowlingServerPCH.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Ws2_32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\SDKs\Libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -140,28 +144,115 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Dependencies\glad\src\glad.c">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\OnlineBowling\Ball.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">OnlineBowlingPCH.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="..\OnlineBowling\Engine.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">OnlineBowlingPCH.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="..\OnlineBowling\Floor.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">OnlineBowlingPCH.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="..\OnlineBowling\GameObject.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">OnlineBowlingPCH.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="..\OnlineBowling\GameObjectRegistry.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">OnlineBowlingPCH.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="..\OnlineBowling\imgui.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\OnlineBowling\imgui_demo.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\OnlineBowling\imgui_draw.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\OnlineBowling\imgui_impl_glfw.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\OnlineBowling\imgui_impl_opengl3.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\OnlineBowling\imgui_tables.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\OnlineBowling\imgui_widgets.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\OnlineBowling\InputManager.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">OnlineBowlingPCH.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="..\OnlineBowling\InputState.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">OnlineBowlingPCH.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="..\OnlineBowling\MemoryBitStream.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">OnlineBowlingPCH.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="..\OnlineBowling\Move.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">OnlineBowlingPCH.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="..\OnlineBowling\MoveList.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">OnlineBowlingPCH.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="..\OnlineBowling\NetworkManager.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">OnlineBowlingPCH.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="..\OnlineBowling\ResourcesManager.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">OnlineBowlingPCH.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="..\OnlineBowling\SocketAddress.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">OnlineBowlingPCH.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="..\OnlineBowling\SocketAddressFactory.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">OnlineBowlingPCH.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="..\OnlineBowling\SocketUtil.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">OnlineBowlingPCH.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="..\OnlineBowling\StringUtils.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">OnlineBowlingPCH.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="..\OnlineBowling\TCPSocket.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">OnlineBowlingPCH.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="..\OnlineBowling\Timing.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">OnlineBowlingPCH.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="..\OnlineBowling\UDPSocket.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">OnlineBowlingPCH.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="..\OnlineBowling\World.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">OnlineBowlingPCH.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="BallServer.cpp" />
+    <ClCompile Include="ClientProxy.cpp" />
+    <ClCompile Include="FloorServer.cpp" />
+    <ClCompile Include="NetworkManagerServer.cpp" />
+    <ClCompile Include="OnlineBowlingServerPCH.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">OnlineBowlingServerPCH.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="ReplicationManagerServer.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="ServerMain.cpp" />
-    <ClCompile Include="NetworkManagerServer.cpp" />
-    <ClCompile Include="RoboCatPCH.cpp" />
-    <ClCompile Include="SocketAddress.cpp" />
-    <ClCompile Include="SocketAddressFactory.cpp" />
-    <ClCompile Include="SocketUtil.cpp" />
-    <ClCompile Include="StringUtils.cpp" />
-    <ClCompile Include="TCPSocket.cpp" />
-    <ClCompile Include="UDPSocket.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\OnlineBowling\OnlineBowling.vcxproj">
+      <Project>{ed78c4b0-ebb5-4e5b-9feb-5f00b3c31171}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BallServer.h" />
+    <ClInclude Include="ClientProxy.h" />
+    <ClInclude Include="FloorServer.h" />
     <ClInclude Include="NetworkManagerServer.h" />
-    <ClInclude Include="RoboCatPCH.h" />
-    <ClInclude Include="RoboCatShared.h" />
+    <ClInclude Include="OnlineBowlingServerPCH.h" />
+    <ClInclude Include="ReplicationManagerServer.h" />
     <ClInclude Include="Server.h" />
-    <ClInclude Include="SocketAddress.h" />
-    <ClInclude Include="SocketAddressFactory.h" />
-    <ClInclude Include="SocketUtil.h" />
-    <ClInclude Include="StringUtils.h" />
-    <ClInclude Include="TCPSocket.h" />
-    <ClInclude Include="UDPSocket.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
