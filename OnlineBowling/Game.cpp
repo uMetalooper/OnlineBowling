@@ -35,6 +35,7 @@ void Game::ResetPins()
 	constexpr float rowSep = sep * 0.866;
 	for (int i = 0; i < 10; i++)
 	{
+		pins[i].SetActive(true);
 		// reset color
 		pins[i].setColor(white);
 
@@ -51,10 +52,7 @@ void Game::ResetPins()
 		pins[i].setPosition(glm::vec2(x, y));
 
 		// reset state
-		for (int i = 0; i < 10; i++)
-		{
-			touchedIndex[i] = false;
-		}
+		touchedIndex[i] = false;
 	}
 	removedIndex = 0;
 }
@@ -138,10 +136,13 @@ void Game::Update(float dt)
 				pins[i].SetActive(false);
 				pins[i].setPosition(glm::vec2((colIndex - 1) * 3 * BALL_RADIUS, ALLEY_LENGTH + (rowIndex + 1) * 3 * BALL_RADIUS));
 				pins[i].setVelocity(glm::vec2(0.0f));
+				pins[i].setColor(glm::vec3(0.0f));
 				removedIndex++;
 			}
 		}
 	}
+	if (ball.getPosition().x > ALLEY_WIDTH / 2.0f || ball.getPosition().x < -ALLEY_WIDTH / 2.0f || ball.getPosition().y > ALLEY_LENGTH)
+		ball.setVelocity(glm::vec2(0.0f));
 	if (!ballThrown)
 	{
 		return;
@@ -158,6 +159,11 @@ void Game::Update(float dt)
 		return;
 	}
 	ResetBall();
+	playerIndex++;
+	if (playerIndex % 2 == 0)
+	{
+		ResetPins();
+	}
 }
 
 void Game::Render()

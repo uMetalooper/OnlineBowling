@@ -41,6 +41,8 @@ private:
 	bool touchedIndex[10];
 	int removedIndex;
 
+	int playerIndex = 0;
+
 	Floor floor;
 
 	Shader shader;

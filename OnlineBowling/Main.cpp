@@ -24,7 +24,7 @@ glm::vec3 up(0.0f, 0.0f, 1.0f);
 float deltaTime = 0.0f;	// Time between current frame and last frame
 float lastFrame = 0.0f; // Time of last frame
 
-void processInput(GLFWwindow*);
+void processInput(GLFWwindow*, Game&);
 void framebuffer_size_callback(GLFWwindow*, int, int);
 
 int main()
@@ -81,19 +81,13 @@ int main()
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
-		{
-			ImGui::Begin("Game parameters");
-			ImGui::SliderFloat("Floor length", &fsize, 0.0f, 10.0f);
-			ImGui::End();
-		}
 
 		float currentFrame = glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 		// processing input
-		processInput(window);
-		if (glfwGetKey(window, GLFW_KEY_ENTER) == GLFW_PRESS)
-			game.applyImpulse(glm::vec2(0.0f, 8.0f));
+		processInput(window, game);
+		
 
 		// update game state
 		game.Update(deltaTime);
@@ -131,20 +125,39 @@ int main()
 	return 0;
 }
 
-void processInput(GLFWwindow* window)
+void processInput(GLFWwindow* window, Game& game)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, true);
 
-	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-		cam.ProcessKeyboard(Camera_Movement::FORWARD, deltaTime);
-	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-		cam.ProcessKeyboard(Camera_Movement::BACKWARD, deltaTime);
+	auto oldPos = game.ball.getPosition();
 
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-		cam.ProcessKeyboard(Camera_Movement::LEFT, deltaTime);
+	{
+		auto newPos = oldPos - glm::vec2(deltaTime, 0.0f);
+		if (newPos.x < -0.5f)
+		{
+			game.ball.setPosition(glm::vec2(-0.5, newPos.y));
+		}
+		else
+		{
+			game.ball.setPosition(newPos);
+		}
+	}
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-		cam.ProcessKeyboard(Camera_Movement::RIGHT, deltaTime);
+	{
+		auto newPos = oldPos + glm::vec2(deltaTime, 0.0f);
+		if (newPos.x > 0.5f)
+		{
+			game.ball.setPosition(glm::vec2(0.5, newPos.y));
+		}
+		else
+		{
+			game.ball.setPosition(newPos);
+		}
+	}
+	if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS)
+		game.applyImpulse(glm::vec2(0.0f, 8.0f));
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
