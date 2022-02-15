@@ -6,8 +6,6 @@ public:
 
 	virtual void DoFrame() override;
 
-	virtual void DoRunLoop() override;
-
 	void HandleNewClient(ClientProxyPtr inClientProxy);
 	void HandleLostClient(ClientProxyPtr inClientProxy);
 
@@ -18,6 +16,5 @@ private:
 	Server();
 
 	bool	InitNetworkManager();
-	void	SetupWorld();
 
 };

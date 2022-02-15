@@ -4,6 +4,12 @@ Drawable::Drawable(GameObject* inGameObject) :
 {
 	RenderManager::sInstance->AddDrawable(this);
 }
+
+Drawable::~Drawable()
+{
+	RenderManager::sInstance->RemoveDrawable(this);
+}
+
 void Drawable::addVertex(float x, float y, float z)
 {
 	vertices.push_back(x);

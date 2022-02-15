@@ -8,6 +8,7 @@ public:
 	}
 
 	Drawable(GameObject* inGameObject);
+	~Drawable();
 
 	GameObject* GetGameObject() { return mGameObject; }
 

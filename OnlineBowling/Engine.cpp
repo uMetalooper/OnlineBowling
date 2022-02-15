@@ -32,9 +32,13 @@ Engine::~Engine()
 
 void Engine::Run()
 {
+	DoRunLoop();
+}
+
+void Engine::DoRunLoop()
+{
 	while (mShouldKeepRunning)
 	{
-		DoRunLoop();
 		Timing::sInstance.Update();
 		DoFrame();
 	}

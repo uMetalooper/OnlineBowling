@@ -19,11 +19,6 @@ void Server::DoFrame()
 	NetworkManagerServer::sInstance->SendOutgoingPackets();
 }
 
-void Server::DoRunLoop()
-{
-
-}
-
 Server::Server()
 {
 	GameObjectRegistry::sInstance->RegisterCreationFunction('BALL', BallServer::StaticCreate);
@@ -56,10 +51,10 @@ void Server::HandleLostClient(ClientProxyPtr inClientProxy)
 	int playerId = inClientProxy->GetPlayerId();
 
 	//ScoreBoardManager::sInstance->RemoveEntry(playerId);
-	BallPtr cat = GetBallForPlayer(playerId);
-	if (cat)
+	BallPtr ball = GetBallForPlayer(playerId);
+	if (ball)
 	{
-		cat->SetDoesWantToDie(true);
+		ball->SetDoesWantToDie(true);
 	}
 }
 

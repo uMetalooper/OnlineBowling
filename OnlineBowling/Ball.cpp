@@ -66,7 +66,5 @@ uint32_t Ball::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyStat
 
 	inOutputStream.Write(GetColor());
 
-	uint32_t x = 123;
-	inOutputStream.Write(x);
 	return GetAllStateMask();
 }

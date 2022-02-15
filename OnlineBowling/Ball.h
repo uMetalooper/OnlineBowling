@@ -26,13 +26,6 @@ public:
 
 	virtual void Update() override;
 
-	/*void Draw(Shader& shader)
-	{
-		renderer.setPosition(glm::vec3(position, radius));
-		renderer.setRadius(radius);
-		renderer.Draw(shader);
-	}*/
-
 	void SetActive(bool s) { activeSelf = s; }
 	bool GetActive() { return activeSelf; }
 

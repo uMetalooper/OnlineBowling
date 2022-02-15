@@ -34,7 +34,7 @@ Client::Client()
 	NetworkManagerClient::StaticInit(*serverAddress, name);
 }
 
-void Client::DoRunLoop()
+void Client::HandleInput()
 {
 	if (WindowManager::sInstance->GetWindowShouldClose())
 	{
@@ -72,6 +72,19 @@ void Client::DoRunLoop()
 
 void Client::DoFrame()
 {
+	switch (mState)
+	{
+	case Client::ECS_Lobby:
+		break;
+	case Client::ECS_Queuing:
+		break;
+	case Client::ECS_In_Game:
+		break;
+	default:
+		break;
+	}
+	HandleInput();
+
 	InputManager::sInstance->Update();
 
 	Engine::DoFrame(); // update all game objects' state

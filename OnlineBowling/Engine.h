@@ -18,6 +18,6 @@ private:
 
 	bool	mShouldKeepRunning;
 
-	virtual void DoRunLoop() = 0;
+	virtual void DoRunLoop();
 
 };
