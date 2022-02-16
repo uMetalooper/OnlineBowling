@@ -3,11 +3,13 @@
 
 class NetworkManagerClient : public NetworkManager
 {
+public:
 	enum NetworkClientState
 	{
 		NCS_Uninitialized,
 		NCS_SayingHello,
-		NCS_Welcomed
+		NCS_Welcomed,
+		NCS_Replicating
 	};
 
 public:
@@ -23,6 +25,9 @@ public:
 	float									GetRoundTripTime()		const { return mAvgRoundTripTime.GetValue(); }
 	int		GetPlayerId()											const { return mPlayerId; }
 	float	GetLastMoveProcessedByServerTimestamp()					const { return mLastMoveProcessedByServerTimestamp; }
+
+	NetworkClientState GetState() { return mState; }
+	void SetName(const string& inName) { mName = inName; }
 private:
 	NetworkManagerClient();
 	void Init(const SocketAddress& inServerAddress, const string& inName);

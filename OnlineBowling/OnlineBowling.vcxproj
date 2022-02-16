@@ -191,6 +191,7 @@
     <ClCompile Include="StringUtils.cpp" />
     <ClCompile Include="TCPSocket.cpp" />
     <ClCompile Include="Timing.cpp" />
+    <ClCompile Include="TinyLogger.cpp" />
     <ClCompile Include="UDPSocket.cpp" />
     <ClCompile Include="World.cpp" />
   </ItemGroup>
@@ -226,6 +227,7 @@
     <ClInclude Include="StringUtils.h" />
     <ClInclude Include="TCPSocket.h" />
     <ClInclude Include="Timing.h" />
+    <ClInclude Include="TinyLogger.h" />
     <ClInclude Include="UDPSocket.h" />
     <ClInclude Include="WeightedTimedMovingAverage.h" />
     <ClInclude Include="World.h" />

@@ -1,6 +1,6 @@
 class Client : public Engine
 {
-	enum EClientState
+	enum class EClientState
 	{
 		ECS_Lobby,
 		ECS_Queuing,
@@ -17,6 +17,8 @@ protected:
 	virtual void	DoFrame() override;
 	
 	void HandleInput();
+
+
 
 private:
 	EClientState mState;

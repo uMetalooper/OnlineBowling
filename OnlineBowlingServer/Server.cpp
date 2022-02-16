@@ -44,6 +44,14 @@ void Server::HandleNewClient(ClientProxyPtr inClientProxy)
 	SpawnBallForPlayer(playerId);
 }
 
+void Server::HandleNewGame(ClientProxyPtr inClientAProxy, ClientProxyPtr inClientBProxy)
+{
+	FloorPtr floor = std::static_pointer_cast<Floor>(GameObjectRegistry::sInstance->CreateGameObject('FLOO'));
+	floor->SetLocation(Vector3(0.0f, 9.0f, 0.0f));
+	floor->SetSize(Vector3(1.0f, 18.0f, 1.0f));
+	floor->SetColor(Vector3(1.0f, 0.0f, 0.0f));
+}
+
 void Server::HandleLostClient(ClientProxyPtr inClientProxy)
 {
 	//kill client's cat

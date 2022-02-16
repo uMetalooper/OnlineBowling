@@ -16,6 +16,7 @@ NetworkManagerClient::NetworkManagerClient() :
 
 void NetworkManagerClient::StaticInit(const SocketAddress& inServerAddress, const string& inName)
 {
+	TinyLogger log("NetworkManagerClient::StaticInit");
 	sInstance = new NetworkManagerClient();
 	return sInstance->Init(inServerAddress, inName);
 }
@@ -34,14 +35,22 @@ void NetworkManagerClient::Init(const SocketAddress& inServerAddress, const stri
 
 void NetworkManagerClient::ProcessPacket(InputMemoryBitStream& inInputStream, const SocketAddress& inFromAddress)
 {
+	TinyLogger log("NetworkManagerClient::ProcessPacket");
+
 	uint32_t	packetType;
 	inInputStream.Read(packetType);
 	switch (packetType)
 	{
 	case kWelcomeCC:
+		LOG("PackageType: Welcome", NULL);
 		HandleWelcomePacket(inInputStream);
 		break;
+	case kStartCC:
+		LOG("PackageType: Start", NULL);
+		mState = NCS_Replicating;
+		break;
 	case kStateCC:
+		LOG("PackageType: State", NULL);
 		HandleStatePacket(inInputStream);
 		break;
 	}
@@ -50,12 +59,18 @@ void NetworkManagerClient::ProcessPacket(InputMemoryBitStream& inInputStream, co
 
 void NetworkManagerClient::SendOutgoingPackets()
 {
+	TinyLogger log("NetworkManagerClient::SendOutgoingPackets");
+
 	switch (mState)
 	{
 	case NCS_SayingHello:
+		LOG("UpdateSayingHello()", NULL);
 		UpdateSayingHello();
 		break;
 	case NCS_Welcomed:
+		break;
+	case NCS_Replicating:
+		LOG("UpdateSendingInputPacket()", NULL);
 		UpdateSendingInputPacket();
 		break;
 	}
@@ -99,10 +114,11 @@ void NetworkManagerClient::HandleWelcomePacket(InputMemoryBitStream& inInputStre
 
 void NetworkManagerClient::HandleStatePacket(InputMemoryBitStream& inInputStream)
 {
-	if (mState == NCS_Welcomed)
+	TinyLogger log("NetworkManagerClient::HandleStatePacket");
+	if (mState == NCS_Replicating)
 	{
 		ReadLastMoveProcessedOnServerTimestamp(inInputStream);
-
+		
 		//old
 		//HandleGameObjectState( inPacketBuffer );
 		HandleScoreBoardState(inInputStream);
@@ -131,6 +147,8 @@ void NetworkManagerClient::ReadLastMoveProcessedOnServerTimestamp(InputMemoryBit
 
 void NetworkManagerClient::HandleGameObjectState(InputMemoryBitStream& inInputStream)
 {
+	TinyLogger log("NetworkManagerClient::HandleGameObjectState");
+
 	//copy the mNetworkIdToGameObjectMap so that anything that doesn't get an updated can be destroyed...
 	IntToGameObjectMap	objectsToDestroy = mNetworkIdToGameObjectMap;
 

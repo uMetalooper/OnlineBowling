@@ -2,8 +2,30 @@
 
 std::unique_ptr< RenderManager >	RenderManager::sInstance;
 
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+	glViewport(0, 0, width, height);
+}
+
 RenderManager::RenderManager()
 {
+	glfwInit();
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+	mMainWindow = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Online Bowling Game", NULL, NULL);
+
+	glfwMakeContextCurrent(mMainWindow);
+
+	// GLAD
+	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+
+	glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+	glfwSetFramebufferSizeCallback(mMainWindow, framebuffer_size_callback);
+
+	glEnable(GL_DEPTH_TEST);
+
 	string vertexShaderSource = ResourcesManager::getAbsolutePathOf(R"(Shaders\Sphere.vert)");
 	string fragmentShaderSource = ResourcesManager::getAbsolutePathOf(R"(Shaders\Sphere.frag)");
 	mShader = Shader(vertexShaderSource.c_str(), fragmentShaderSource.c_str());
@@ -26,11 +48,12 @@ void RenderManager::StaticInit()
 
 void RenderManager::Render()
 {
-	GraphicsDriver::sInstance->Clear();
+	//glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	RenderManager::sInstance->RenderDrawables();
 
-	GraphicsDriver::sInstance->Present();
+	//glfwSwapBuffers(mMainWindow);
 }
 
 void RenderManager::AddDrawable(Drawable* inDrawable)

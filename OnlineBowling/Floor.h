@@ -28,3 +28,4 @@ private:
 	Vector3 mSize;
 };
 
+typedef shared_ptr< Floor >	FloorPtr;

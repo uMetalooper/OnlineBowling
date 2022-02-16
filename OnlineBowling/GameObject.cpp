@@ -11,6 +11,6 @@ GameObject::GameObject() :
 
 void GameObject::PrintSelf()
 {
-	printf("Location: %f, %f, %f\n", mLocation.x, mLocation.y, mLocation.z);
+	printf("%d - Location: %f, %f, %f\n", GetClassId(), mLocation.x, mLocation.y, mLocation.z);
 
 }

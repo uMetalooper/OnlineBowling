@@ -4,10 +4,12 @@
 
 void ReplicationManagerClient::Read(InputMemoryBitStream& inInputStream)
 {
+	TinyLogger log("ReplicationManagerClient::Read");
 	while (inInputStream.GetRemainingBitCount() >= 32)
 	{
 		//read the network id...
 		int networkId; inInputStream.Read(networkId);
+		LOG("NetworkId: %d", networkId);
 
 		//only need 2 bits for action...
 		uint8_t action; inInputStream.Read(action, 2);
@@ -15,12 +17,15 @@ void ReplicationManagerClient::Read(InputMemoryBitStream& inInputStream)
 		switch (action)
 		{
 		case RA_Create:
+			LOG("Replication Action: Create", 0);
 			ReadAndDoCreateAction(inInputStream, networkId);
 			break;
 		case RA_Update:
+			LOG("Replication Action: Update", 0);
 			ReadAndDoUpdateAction(inInputStream, networkId);
 			break;
 		case RA_Destroy:
+			LOG("Replication Action: Destroy", 0);
 			ReadAndDoDestroyAction(inInputStream, networkId);
 			break;
 		}
@@ -31,15 +36,30 @@ void ReplicationManagerClient::Read(InputMemoryBitStream& inInputStream)
 
 void ReplicationManagerClient::ReadAndDoCreateAction(InputMemoryBitStream& inInputStream, int inNetworkId)
 {
+	TinyLogger log("ReplicationManagerClient::ReadAndDoCreateAction");
 	//need 4 cc
 	uint32_t fourCCName;
 	inInputStream.Read(fourCCName);
+
+	switch (fourCCName)
+	{
+	case 'BALL':
+		LOG("FourCCName: BALL", NULL);
+		break;	
+	case 'FLOO':
+		LOG("FourCCName: FLOO", NULL);
+		break;
+	default:
+		LOG("FourCCName: Unknown", NULL);
+		break;
+	}
 
 	//we might already have this object- could happen if our ack of the create got dropped so server resends create request 
 	//( even though we might have created )
 	GameObjectPtr gameObject = NetworkManagerClient::sInstance->GetGameObject(inNetworkId);
 	if (!gameObject)
 	{
+		TinyLogger log2("Create game object");
 		//create the object and map it...
 		gameObject = GameObjectRegistry::sInstance->CreateGameObject(fourCCName);
 		gameObject->SetNetworkId(inNetworkId);
@@ -55,6 +75,7 @@ void ReplicationManagerClient::ReadAndDoCreateAction(InputMemoryBitStream& inInp
 
 void ReplicationManagerClient::ReadAndDoUpdateAction(InputMemoryBitStream& inInputStream, int inNetworkId)
 {
+	TinyLogger log("ReplicationManagerClient::ReadAndDoUpdateAction");
 	//need object
 	GameObjectPtr gameObject = NetworkManagerClient::sInstance->GetGameObject(inNetworkId);
 
@@ -65,6 +86,7 @@ void ReplicationManagerClient::ReadAndDoUpdateAction(InputMemoryBitStream& inInp
 
 void ReplicationManagerClient::ReadAndDoDestroyAction(InputMemoryBitStream& inInputStream, int inNetworkId)
 {
+	TinyLogger log("ReplicationManagerClient::ReadAndDoDestroyAction");
 	//if something was destroyed before the create went through, we'll never get it
 	//but we might get the destroy request, so be tolerant of being asked to destroy something that wasn't created
 	GameObjectPtr gameObject = NetworkManagerClient::sInstance->GetGameObject(inNetworkId);

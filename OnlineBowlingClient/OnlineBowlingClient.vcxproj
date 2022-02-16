@@ -124,7 +124,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\SDKs\Libs;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>ws2_32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>ws2_32.lib;glfw3.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -149,7 +149,6 @@
     <ClInclude Include="Drawable.h" />
     <ClInclude Include="FloorClient.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="GraphicsDriver.h" />
     <ClInclude Include="NetworkManagerClient.h" />
     <ClInclude Include="OnlineBowlingClientPCH.h" />
     <ClInclude Include="Plane.h" />
@@ -157,7 +156,7 @@
     <ClInclude Include="ReplicationManagerClient.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Sphere.h" />
-    <ClInclude Include="WindowManager.h" />
+    <ClInclude Include="TextRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Dependencies\glad\src\glad.c">
@@ -257,7 +256,6 @@
     <ClCompile Include="Drawable.cpp" />
     <ClCompile Include="FloorClient.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="GraphicsDriver.cpp" />
     <ClCompile Include="NetworkManagerClient.cpp" />
     <ClCompile Include="OnlineBowlingClientPCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -267,7 +265,7 @@
     <ClCompile Include="ReplicationManagerClient.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Sphere.cpp" />
-    <ClCompile Include="WindowManager.cpp" />
+    <ClCompile Include="TextRenderer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

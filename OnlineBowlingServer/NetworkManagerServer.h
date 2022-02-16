@@ -27,6 +27,7 @@ private:
 	void	ProcessPacket(ClientProxyPtr inClientProxy, InputMemoryBitStream& inInputStream);
 
 	void	SendWelcomePacket(ClientProxyPtr inClientProxy);
+	void	SendStartPacket(ClientProxyPtr inClientProxy);
 	void	UpdateAllClients();
 
 	void	AddWorldStateToPacket(OutputMemoryBitStream& inOutputStream);
@@ -53,6 +54,8 @@ private:
 	float			mTimeOfLastSatePacket;
 	float			mTimeBetweenStatePackets;
 	float			mClientDisconnectTimeout;
+
+	ClientProxyPtr PendingClient;
 };
 
 

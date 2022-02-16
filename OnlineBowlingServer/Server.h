@@ -7,6 +7,7 @@ public:
 	virtual void DoFrame() override;
 
 	void HandleNewClient(ClientProxyPtr inClientProxy);
+	void HandleNewGame(ClientProxyPtr inClientAProxy, ClientProxyPtr inClientBProxy);
 	void HandleLostClient(ClientProxyPtr inClientProxy);
 
 	BallPtr	GetBallForPlayer(int inPlayerId);

@@ -55,16 +55,46 @@ void Ball::ProcessInput(float inDeltaTime, const InputState& inInputState)
 
 uint32_t Ball::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) const
 {
-	inOutputStream.Write(GetPlayerId());
-	Vector3 velocity = mVelocity;
-	inOutputStream.Write(velocity.x);
-	inOutputStream.Write(velocity.y);
+	uint32_t writtenState = 0;
+	if (inDirtyState | EBRS_PlayerId)
+	{
+		inOutputStream.Write((bool)true);
+		inOutputStream.Write(GetPlayerId());
+		writtenState |= EBRS_PlayerId;
+	}
+	else
+	{
+		inOutputStream.Write((bool)false);
+	}
 
-	Vector3 location = GetLocation();
-	inOutputStream.Write(location.x);
-	inOutputStream.Write(location.y);
+	if (inDirtyState | EBRS_Pose)
+	{
+		inOutputStream.Write((bool)true);
+		Vector3 velocity = mVelocity;
+		inOutputStream.Write(velocity.x);
+		inOutputStream.Write(velocity.y);
 
-	inOutputStream.Write(GetColor());
+		Vector3 location = GetLocation();
+		inOutputStream.Write(location.x);
+		inOutputStream.Write(location.y);
 
-	return GetAllStateMask();
+		writtenState |= EBRS_Pose;
+	}
+	else
+	{
+		inOutputStream.Write((bool)false);
+	}
+	
+	if (inDirtyState | EBRS_Color)
+	{
+		inOutputStream.Write((bool)true);
+		inOutputStream.Write(GetColor());
+		writtenState |= EBRS_Color;
+	}
+	else
+	{
+		inOutputStream.Write((bool)false);
+	}
+
+	return writtenState;
 }

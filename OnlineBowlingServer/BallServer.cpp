@@ -29,7 +29,10 @@ void BallServer::Update()
 
 	//HandleShooting();
 
-	NetworkManagerServer::sInstance->SetStateDirty(GetPlayerId(), 1);
+	if (oldLocation != GetLocation() || oldVelocity != GetVelocity())
+	{
+		NetworkManagerServer::sInstance->SetStateDirty(GetNetworkId(), EBRS_Pose);
+	}
 }
 
 BallServer::BallServer()

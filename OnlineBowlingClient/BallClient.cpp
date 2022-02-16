@@ -2,22 +2,44 @@
 
 void BallClient::Read(InputMemoryBitStream& inInputStream)
 {
-	uint32_t playerId;
-	inInputStream.Read(playerId);
-	SetPlayerId(playerId);
+	bool stateBit;
+
+	uint32_t readState = 0;
+
+	inInputStream.Read(stateBit);
+	if (stateBit)
+	{
+		uint32_t playerId;
+		inInputStream.Read(playerId);
+		SetPlayerId(playerId);
+
+		readState |= EBRS_PlayerId;
+	}
 
 	Vector3 replicatedLocation(0.0f);
 	Vector3 replicatedVelocity(0.0f);
 
-	inInputStream.Read(replicatedVelocity.x);
-	inInputStream.Read(replicatedVelocity.y);
-	SetVelocity(replicatedVelocity);
+	inInputStream.Read(stateBit);
+	if (stateBit)
+	{
+		inInputStream.Read(replicatedVelocity.x);
+		inInputStream.Read(replicatedVelocity.y);
+		SetVelocity(replicatedVelocity);
 
-	inInputStream.Read(replicatedLocation.x);
-	inInputStream.Read(replicatedLocation.y);
-	SetLocation(replicatedLocation);
+		inInputStream.Read(replicatedLocation.x);
+		inInputStream.Read(replicatedLocation.y);
+		SetLocation(replicatedLocation);
 
-	Vector3 color;
-	inInputStream.Read(color);
-	SetColor(color);
+		readState |= EBRS_Pose;
+	}
+	
+	inInputStream.Read(stateBit);
+	if (stateBit)
+	{
+		Vector3 color;
+		inInputStream.Read(color);
+		SetColor(color);
+
+		readState |= EBRS_Color;
+	}
 }

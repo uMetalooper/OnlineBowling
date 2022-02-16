@@ -6,6 +6,7 @@ public:
 	static const uint32_t	kHelloCC = 'HELO';
 	static const uint32_t	kWelcomeCC = 'WLCM';
 	static const uint32_t	kStateCC = 'STAT';
+	static const uint32_t	kStartCC = 'STAR';
 	static const uint32_t	kInputCC = 'INPT';
 	static const int		kMaxPacketsPerFrameCount = 10;
 

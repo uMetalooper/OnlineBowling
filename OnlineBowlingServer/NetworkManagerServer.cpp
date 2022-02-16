@@ -47,6 +47,8 @@ void NetworkManagerServer::ProcessPacket(InputMemoryBitStream& inInputStream, co
 
 void NetworkManagerServer::ProcessPacket(ClientProxyPtr inClientProxy, InputMemoryBitStream& inInputStream)
 {
+	OutputMemoryBitStream startPacket;
+
 	//remember we got a packet so we know not to disconnect for a bit
 	inClientProxy->UpdateLastPacketTime();
 
@@ -80,21 +82,35 @@ void NetworkManagerServer::HandlePacketFromNewClient(InputMemoryBitStream& inInp
 		string name;
 		inInputStream.Read(name);
 		ClientProxyPtr newClientProxy = std::make_shared< ClientProxy >(inFromAddress, name, mNewPlayerId++);
-		mAddressToClientMap[inFromAddress] = newClientProxy;
-		mPlayerIdToClientMap[newClientProxy->GetPlayerId()] = newClientProxy;
-
-		//tell the server about this client, spawn a cat, etc...
-		//if we had a generic message system, this would be a good use for it...
-		//instead we'll just tell the server directly
-		static_cast<Server*> (Engine::sInstance.get())->HandleNewClient(newClientProxy);
-
 		//and welcome the client...
 		SendWelcomePacket(newClientProxy);
-
-		//and now init the replication manager with everything we know about!
-		for (const auto& pair : mNetworkIdToGameObjectMap)
+		if (mNewPlayerId % 2 == 1)
 		{
-			newClientProxy->GetReplicationManagerServer().ReplicateCreate(pair.first, pair.second->GetAllStateMask());
+			mAddressToClientMap[PendingClient->GetSocketAddress()] = PendingClient;
+			mPlayerIdToClientMap[PendingClient->GetPlayerId()] = PendingClient;
+
+			mAddressToClientMap[inFromAddress] = newClientProxy;
+			mPlayerIdToClientMap[newClientProxy->GetPlayerId()] = newClientProxy;
+
+			// spawn balls for each client
+			static_cast<Server*> (Engine::sInstance.get())->HandleNewClient(PendingClient);
+			static_cast<Server*> (Engine::sInstance.get())->HandleNewClient(newClientProxy);
+			static_cast<Server*> (Engine::sInstance.get())->HandleNewGame(PendingClient, newClientProxy);
+
+			SendStartPacket(PendingClient);
+			SendStartPacket(newClientProxy);
+
+			//and now init the replication manager with everything we know about!
+			for (const auto& pair : mNetworkIdToGameObjectMap)
+			{
+				PendingClient->GetReplicationManagerServer().ReplicateCreate(pair.first, pair.second->GetAllStateMask());
+				newClientProxy->GetReplicationManagerServer().ReplicateCreate(pair.first, pair.second->GetAllStateMask());
+			}
+			PendingClient.reset();
+		}
+		else
+		{
+			PendingClient = newClientProxy;
 		}
 	}
 	else
@@ -112,6 +128,14 @@ void NetworkManagerServer::SendWelcomePacket(ClientProxyPtr inClientProxy)
 	welcomePacket.Write(inClientProxy->GetPlayerId());
 
 	LOG("Server Welcoming, new client '%s' as player %d", inClientProxy->GetName().c_str(), inClientProxy->GetPlayerId());
+
+	SendPacket(welcomePacket, inClientProxy->GetSocketAddress());
+}
+void NetworkManagerServer::SendStartPacket(ClientProxyPtr inClientProxy)
+{
+	OutputMemoryBitStream welcomePacket;
+
+	welcomePacket.Write(kStartCC);
 
 	SendPacket(welcomePacket, inClientProxy->GetSocketAddress());
 }
@@ -222,7 +246,6 @@ void NetworkManagerServer::HandleInputPacket(ClientProxyPtr inClientProxy, Input
 		{
 			if (inClientProxy->GetUnprocessedMoveList().AddMove(move))
 			{
-				std::cout << "Received input package" << std::endl;
 				inClientProxy->SetIsLastMoveTimestampDirty(true);
 			}
 		}

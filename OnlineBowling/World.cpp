@@ -45,7 +45,6 @@ void World::Update()
 	{
 		GameObjectPtr go = mGameObjects[i];
 
-		go->PrintSelf();
 		if (!go->DoesWantToDie())
 		{
 			go->Update();

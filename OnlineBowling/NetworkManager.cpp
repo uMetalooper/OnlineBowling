@@ -39,6 +39,8 @@ bool NetworkManager::Init(uint16_t inPort)
 
 void NetworkManager::ProcessIncomingPackets()
 {
+	TinyLogger log("NetworkManager::ProcessIncomingPackets");
+
 	ReadIncomingPacketsIntoQueue();
 
 	ProcessQueuedPackets();

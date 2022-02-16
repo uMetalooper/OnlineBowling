@@ -13,8 +13,13 @@ public:
 
 	void RenderDrawables();
 
+	GLFWwindow* GetMainWindow() { return mMainWindow; }
+	bool GetWindowShouldClose() { return glfwWindowShouldClose(mMainWindow); }
+
 private:
 	RenderManager();
+
+	GLFWwindow* mMainWindow;
 
 	Shader mShader;
 	vector<Drawable*> mDrawables;

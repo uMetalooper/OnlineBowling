@@ -2,8 +2,11 @@
 
 void Plane::Draw(Shader& shader)
 {
+	TinyLogger log("Plane::Draw");
 	center = GetGameObject()->GetLocation();
+	LOG("Center: %f, %f, %f", center.x, center.y, center.z);
 	color = GetGameObject()->GetColor();
+
 	shader.use();
 	glm::mat4 model = glm::mat4(1.0f);
 	model = glm::translate(model, center);
@@ -12,7 +15,9 @@ void Plane::Draw(Shader& shader)
 	model = glm::rotate(model, glm::radians(rotateY), front);
 	model = glm::rotate(model, glm::radians(rotateZ), up);
 
-	model = glm::scale(model, glm::vec3(size, 1.0f));
+	Vector3 lsize = static_cast<Floor*>(GetGameObject())->GetSize();
+	LOG("Size: %f, %f, %f", lsize.x, lsize.y, lsize.z);
+	model = glm::scale(model, lsize);
 	shader.setMat4("model", model);
 	shader.setVec3("color", color);
 
@@ -49,8 +54,10 @@ void Plane::BuildPlane()
 	addNormal(up.x, up.y, up.z);
 	addTexCoord(1.0f, 1.0f);
 
-	addIndices(0, 1, 2);
-	addIndices(1, 2, 3);
+	// Changed from CW to CCW for face culling
+	//addIndices(0, 1, 2); 
+	addIndices(0, 2, 1); 
+	addIndices(1, 2, 3); 
 
 	buildInterleavedVertices();
 	initRenderData();
