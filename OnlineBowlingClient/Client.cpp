@@ -161,6 +161,8 @@ void Client::DoFrame()
 	static float timeNextTick = Timing::sInstance.GetTimef();
 	SocketAddressPtr serverAddress = SocketAddressFactory::CreateIPv4FromString("127.0.0.1:45000");
 
+	float ScoreBoardOriginX = 25.0f;
+	float ScoreBoardOriginY = SCR_HEIGHT * 0.9;
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -219,6 +221,17 @@ void Client::DoFrame()
 		InputManager::sInstance->Update();
 		Engine::DoFrame(); // update all game objects' state
 		NetworkManagerClient::sInstance->ProcessIncomingPackets();
+
+		for (const auto& entry : ScoreBoardManager::sInstance->GetEntries())
+		{
+			TextRenderer::sInstance->RenderText(
+				entry.GetFormattedNameScore(), 
+				ScoreBoardOriginX,
+				ScoreBoardOriginY,
+				1.0, entry.GetColor());
+			ScoreBoardOriginY -= SCR_HEIGHT * 0.1;
+		}
+
 		RenderManager::sInstance->Render();
 		NetworkManagerClient::sInstance->SendOutgoingPackets();
 		break;

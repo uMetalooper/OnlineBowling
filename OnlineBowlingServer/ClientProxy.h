@@ -22,6 +22,9 @@ public:
 	void	HandleCatDied();
 	void	RespawnCatIfNecessary();
 
+	void SetIsBallThrown(bool inIsBallThrown) { mIsBallThrown = inIsBallThrown; }
+	bool GetIsBallThrown() { return mIsBallThrown; }
+
 private:
 
 	ReplicationManagerServer	mReplicationManagerServer;
@@ -36,7 +39,7 @@ private:
 	MoveList		mUnprocessedMoveList;
 	bool			mIsLastMoveTimestampDirty;
 
-
+	bool mIsBallThrown;
 
 };
 

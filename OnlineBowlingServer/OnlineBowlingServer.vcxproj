@@ -204,6 +204,9 @@
     <ClCompile Include="..\OnlineBowling\ResourcesManager.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">OnlineBowlingPCH.h</PrecompiledHeaderFile>
     </ClCompile>
+    <ClCompile Include="..\OnlineBowling\ScoreBoardManager.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">OnlineBowlingPCH.h</PrecompiledHeaderFile>
+    </ClCompile>
     <ClCompile Include="..\OnlineBowling\SocketAddress.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">OnlineBowlingPCH.h</PrecompiledHeaderFile>
     </ClCompile>

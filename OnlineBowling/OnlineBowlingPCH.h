@@ -1,3 +1,6 @@
+#define ALLEY_WIDTH (1.0f) // 1 meter wide
+#define HALF_ALLEY_WIDTH (0.5f)
+#define ALLEY_LENGTH (18.288f) // 18.288 meters long
 #define BALL_RADIUS (0.1f)
 
 // Common
@@ -63,6 +66,7 @@ class GameObject;
 #include "World.h"
 #include "Floor.h"
 #include "Ball.h"
+#include "ScoreBoardManager.h"
 
 #include "ResourcesManager.h"
 

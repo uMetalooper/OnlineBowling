@@ -185,6 +185,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="ResourcesManager.cpp" />
+    <ClCompile Include="ScoreBoardManager.cpp" />
     <ClCompile Include="SocketAddress.cpp" />
     <ClCompile Include="SocketAddressFactory.cpp" />
     <ClCompile Include="SocketUtil.cpp" />
@@ -221,6 +222,7 @@
     <ClInclude Include="ReplicationCommand.h" />
     <ClInclude Include="ResourcesManager.h" />
     <ClInclude Include="OnlineBowlingPCH.h" />
+    <ClInclude Include="ScoreBoardManager.h" />
     <ClInclude Include="SocketAddress.h" />
     <ClInclude Include="SocketAddressFactory.h" />
     <ClInclude Include="SocketUtil.h" />

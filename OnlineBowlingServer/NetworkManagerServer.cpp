@@ -218,7 +218,7 @@ void NetworkManagerServer::AddWorldStateToPacket(OutputMemoryBitStream& inOutput
 
 void NetworkManagerServer::AddScoreBoardStateToPacket(OutputMemoryBitStream& inOutputStream)
 {
-	//ScoreBoardManager::sInstance->Write(inOutputStream);
+	ScoreBoardManager::sInstance->Write(inOutputStream);
 }
 
 
@@ -262,6 +262,7 @@ ClientProxyPtr NetworkManagerServer::GetClientProxy(int inPlayerId) const
 
 	return nullptr;
 }
+
 
 void NetworkManagerServer::CheckForDisconnects()
 {

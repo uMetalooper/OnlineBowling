@@ -14,6 +14,8 @@ void Server::DoFrame()
 
 	//NetworkManagerServer::sInstance->RespawnCats();
 
+	//NetworkManagerServer::sInstance->UpdatePlayerTurn();
+
 	Engine::DoFrame();
 
 	NetworkManagerServer::sInstance->SendOutgoingPackets();
@@ -47,15 +49,19 @@ void Server::HandleNewClient(ClientProxyPtr inClientProxy)
 void Server::HandleNewGame(ClientProxyPtr inClientAProxy, ClientProxyPtr inClientBProxy)
 {
 	int playerAId = inClientAProxy->GetPlayerId();
+	ScoreBoardManager::sInstance->AddEntry(playerAId, inClientAProxy->GetName());
 	BallPtr ballA = std::static_pointer_cast<Ball>(GameObjectRegistry::sInstance->CreateGameObject('BALL'));
-	//cat->SetColor(ScoreBoardManager::sInstance->GetEntry(inPlayerId)->GetColor());
+	ballA->SetColor(ScoreBoardManager::sInstance->GetEntry(playerAId)->GetColor());
+	ballA->SetActive(true);
 	ballA->SetPlayerId(playerAId);
 	ballA->SetLocation(Vector3(0.0f, -1.0f, 0.1f));
 	ballA->SetVelocity(Vector3(0.0f));
 
 	int playerBId = inClientBProxy->GetPlayerId();
+	ScoreBoardManager::sInstance->AddEntry(playerBId, inClientBProxy->GetName());
 	BallPtr ballB = std::static_pointer_cast<Ball>(GameObjectRegistry::sInstance->CreateGameObject('BALL'));
-	//cat->SetColor(ScoreBoardManager::sInstance->GetEntry(inPlayerId)->GetColor());
+	ballB->SetColor(ScoreBoardManager::sInstance->GetEntry(playerBId)->GetColor());
+	ballB->SetActive(false);
 	ballB->SetPlayerId(playerBId);
 	ballB->SetLocation(Vector3(0.0f, -2.0f, 0.1f));
 	ballB->SetVelocity(Vector3(0.0f));
@@ -74,7 +80,7 @@ void Server::HandleLostClient(ClientProxyPtr inClientProxy)
 	//remove client from scoreboard
 	int playerId = inClientProxy->GetPlayerId();
 
-	//ScoreBoardManager::sInstance->RemoveEntry(playerId);
+	ScoreBoardManager::sInstance->RemoveEntry(playerId);
 	BallPtr ball = GetBallForPlayer(playerId);
 	if (ball)
 	{

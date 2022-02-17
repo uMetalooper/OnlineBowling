@@ -3,12 +3,6 @@
 const float fricCoeff = 0.03f;
 const float g = 9.8f;
 
-const float ALLEY_WIDTH = 1.0f; // 1 meter wide
-const float HALF_ALLEY_WIDTH = 0.5f;
-const float ALLEY_LENGTH = 18.288f; // 18.288 meters long
-
-//const float BALL_RADIUS = 0.1;
-
 void Ball::Update()
 {
 	float deltaTime = Timing::sInstance.GetDeltaTime();
@@ -86,7 +80,7 @@ uint32_t Ball::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyStat
 	{
 		inOutputStream.Write((bool)false);
 	}
-	
+
 	if (inDirtyState | EBRS_Color)
 	{
 		inOutputStream.Write((bool)true);

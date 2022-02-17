@@ -10,6 +10,7 @@ void World::StaticInit()
 
 World::World()
 {
+	mPlayerIdx = 0;
 }
 
 
@@ -34,6 +35,20 @@ void World::RemoveGameObject(GameObjectPtr inGameObject)
 	inGameObject->SetIndexInWorld(-1);
 
 	mGameObjects.pop_back();
+}
+
+bool World::AllGameObjectsStopMoving()
+{
+	for (int i = 0, c = mGameObjects.size(); i < c; ++i)
+	{
+		GameObjectPtr go = mGameObjects[i];
+		Ball* ball = go->GetAsBall();
+		if (ball && !ball->IsStop())
+		{
+			return false;
+		}
+	}
+	return true;
 }
 
 

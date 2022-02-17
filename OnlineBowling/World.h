@@ -15,9 +15,15 @@ public:
 	void AddGameObject(GameObjectPtr inGameObject);
 	void RemoveGameObject(GameObjectPtr inGameObject);
 
+	bool AllGameObjectsStopMoving();
+
 	void Update();
 
 	const std::vector< GameObjectPtr >& GetGameObjects()	const { return mGameObjects; }
+
+	void IncPlayerIndex() { mPlayerIdx++; }
+	int  GetPlayerIndex() { return mPlayerIdx; }
+	void ResetPlayerIndex() { mPlayerIdx = 0; }
 
 private:
 
@@ -28,5 +34,5 @@ private:
 
 	std::vector< GameObjectPtr >	mGameObjects;
 
-
+	int mPlayerIdx;
 };

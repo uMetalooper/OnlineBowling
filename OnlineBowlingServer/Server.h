@@ -19,4 +19,6 @@ private:
 
 	bool	InitNetworkManager();
 
+
+
 };

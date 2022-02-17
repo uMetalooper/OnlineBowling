@@ -1,6 +1,9 @@
 class BallServer : public Ball
 {
 public:
+	static uint8_t sRemovedIndex;
+	static uint8_t sLastRemovedIndex;
+
 	static GameObjectPtr	StaticCreate() { return NetworkManagerServer::sInstance->RegisterAndReturn(new BallServer()); }
 	void HandleDying() override;
 	
@@ -8,5 +11,7 @@ public:
 
 protected:
 	BallServer();
+
+	bool CheckOutOfBound();
 
 };

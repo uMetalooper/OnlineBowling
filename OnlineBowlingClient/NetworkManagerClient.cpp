@@ -190,7 +190,7 @@ void NetworkManagerClient::HandleGameObjectState(InputMemoryBitStream& inInputSt
 
 void NetworkManagerClient::HandleScoreBoardState(InputMemoryBitStream& inInputStream)
 {
-	//ScoreBoardManager::sInstance->Read(inInputStream);
+	ScoreBoardManager::sInstance->Read(inInputStream);
 }
 
 void NetworkManagerClient::DestroyGameObjectsInMap(const IntToGameObjectMap& inObjectsToDestroy)

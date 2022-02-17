@@ -123,6 +123,9 @@
     <ClCompile Include="FloorServer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\OnlineBowling\ScoreBoardManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="OnlineBowlingServerPCH.h">

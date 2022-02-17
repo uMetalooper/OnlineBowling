@@ -15,7 +15,8 @@ public:
 
 	Ball() : GameObject()
 	{
-		activeSelf = true;
+		mActive = true;
+		mIsTouched = false;
 	}
 
 	virtual	Ball* GetAsBall() override { return this; }
@@ -26,8 +27,8 @@ public:
 
 	virtual void Update() override;
 
-	void SetActive(bool s) { activeSelf = s; }
-	bool GetActive() { return activeSelf; }
+	void SetActive(bool s) { mActive = s; }
+	bool GetActive() { return mActive; }
 
 	bool IsStop() { return glm::length(mVelocity) < 0.000001f; }
 
@@ -41,9 +42,13 @@ public:
 
 	virtual uint32_t	Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) const override;
 
+	void SetIsTouched(bool inIsTouched) { mIsTouched = inIsTouched; }
+	bool GetIsTouched() { return mIsTouched; }
+
 private:
 	Vector3				mVelocity;
-	bool activeSelf;
+	bool mActive;
+	bool mIsTouched;
 
 	uint32_t			mPlayerId;
 protected:

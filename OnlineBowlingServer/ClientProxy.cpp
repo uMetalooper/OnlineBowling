@@ -10,7 +10,8 @@ ClientProxy::ClientProxy(const SocketAddress& inSocketAddress, const string& inN
 	mName(inName),
 	mPlayerId(inPlayerId),
 	mIsLastMoveTimestampDirty(false),
-	mTimeToRespawn(0.f)
+	mTimeToRespawn(0.f),
+	mIsBallThrown(false)
 {
 	UpdateLastPacketTime();
 }

@@ -48,12 +48,24 @@ void RenderManager::StaticInit()
 
 void RenderManager::Render()
 {
-	//glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	// TODO: pre-assign player ball to avoid looping thorugh every game objects every frame
+	for (auto goIt = World::sInstance->GetGameObjects().begin(); goIt != World::sInstance->GetGameObjects().end(); goIt++)
+	{
+		Ball* ball = goIt->get()->GetAsBall();
+		if (ball)
+		{
+			if (ball->GetPlayerId() == NetworkManagerClient::sInstance->GetPlayerId())
+			{
+				Vector3 targetPos = Vector3(0.0f, ball->GetLocation().y + 2.0f, 0.0f);  // in front of the ball 2m
+				Vector3 cameraPos = Vector3(0.0f, ball->GetLocation().y - 2.0f, 2.0f);  // behind the ball 2m, above 2m
+				Vector3 up = glm::vec3(0.0f, 0.0f, 1.0f);
+				glm::mat4 view = glm::lookAt(cameraPos, targetPos, up);
+				mShader.setMat4("view", view);
+			}
+		}
+	}
 
 	RenderManager::sInstance->RenderDrawables();
-
-	//glfwSwapBuffers(mMainWindow);
 }
 
 void RenderManager::AddDrawable(Drawable* inDrawable)
