@@ -148,7 +148,6 @@
     <ClInclude Include="Client.h" />
     <ClInclude Include="Drawable.h" />
     <ClInclude Include="FloorClient.h" />
-    <ClInclude Include="Game.h" />
     <ClInclude Include="NetworkManagerClient.h" />
     <ClInclude Include="OnlineBowlingClientPCH.h" />
     <ClInclude Include="Plane.h" />
@@ -258,7 +257,6 @@
     <ClCompile Include="ClientMain.cpp" />
     <ClCompile Include="Drawable.cpp" />
     <ClCompile Include="FloorClient.cpp" />
-    <ClCompile Include="Game.cpp" />
     <ClCompile Include="NetworkManagerClient.cpp" />
     <ClCompile Include="OnlineBowlingClientPCH.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

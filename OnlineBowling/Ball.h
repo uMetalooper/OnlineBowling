@@ -8,9 +8,8 @@ public:
 		EBRS_Pose = 1 << 0,
 		EBRS_Color = 1 << 1,
 		EBRS_PlayerId = 1 << 2,
-		EBRS_Health = 1 << 3,
 
-		EBRS_AllState = EBRS_Pose | EBRS_Color | EBRS_PlayerId | EBRS_Health
+		EBRS_AllState = EBRS_Pose | EBRS_Color | EBRS_PlayerId
 	};
 
 	Ball() : GameObject()

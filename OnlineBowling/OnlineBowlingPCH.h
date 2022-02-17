@@ -75,6 +75,8 @@ class GameObject;
 #include "NetworkManager.h"
 #include "Engine.h"
 
+#include "Game.h"
+
 
 // Rendering
 #include <glad/glad.h>

@@ -1,6 +1,20 @@
 class Server : public Engine
 {
 public:
+	class Game
+	{
+	public:
+		void Update();
+
+		BallPtr mBallA;
+		BallPtr mBallB;
+		FloorPtr mFloor;
+		BallPtr mPins[10];
+	};
+	typedef shared_ptr<Game> GamePtr;
+
+public:
+	static int sGameId;
 
 	static bool StaticInit();
 
@@ -20,5 +34,5 @@ private:
 	bool	InitNetworkManager();
 
 
-
+	std::map<int, GamePtr> mIdToGames;
 };

@@ -60,6 +60,7 @@ void RenderManager::Render()
 				Vector3 cameraPos = Vector3(0.0f, ball->GetLocation().y - 2.0f, 2.0f);  // behind the ball 2m, above 2m
 				Vector3 up = glm::vec3(0.0f, 0.0f, 1.0f);
 				glm::mat4 view = glm::lookAt(cameraPos, targetPos, up);
+				mShader.use();
 				mShader.setMat4("view", view);
 			}
 		}

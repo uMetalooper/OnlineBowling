@@ -1,14 +1,14 @@
-#include "OnlineBowlingClientPCH.h"
+#include "OnlineBowlingPCH.h"
 
 Game::Game()
 {
-	std::string vertexShaderSource = ResourcesManager::getAbsolutePathOf(R"(Shaders\Sphere.vert)");
+	/*std::string vertexShaderSource = ResourcesManager::getAbsolutePathOf(R"(Shaders\Sphere.vert)");
 	std::string fragmentShaderSource = ResourcesManager::getAbsolutePathOf(R"(Shaders\Sphere.frag)");
 	shader = Shader(vertexShaderSource.c_str(), fragmentShaderSource.c_str());
 
 	shader.use();
 	glm::mat4 proj = glm::perspective(glm::radians(45.0f), (float)800 / (float)600, 0.1f, 100.0f);
-	shader.setMat4("projection", proj);
+	shader.setMat4("projection", proj);*/
 
 	/*floor.size = glm::vec2(ALLEY_WIDTH, ALLEY_LENGTH); 
 	floor.center = glm::vec3(0.0f, ALLEY_LENGTH / 2.0f, 0.0f);*/
@@ -16,11 +16,22 @@ Game::Game()
 	ResetBall();
 	ResetPins();
 
-	mainCamera = Camera(ball.GetLocation());
-	setCamera(mainCamera.calcViewMatrix());
+	//mainCamera = Camera(ball.GetLocation());
+	//setCamera(mainCamera.calcViewMatrix());
 
 	playerIndex = 0;
 	timer = 0.0f;
+}
+Game::Game(int inGameId)
+{
+	mGameId = inGameId;
+	mGameOffsetX = mGameId * 1.2f;
+
+	ResetBall();
+	ResetPins();
+
+	playerIndex = 0;
+	timer = 0.f;
 }
 
 void Game::ResetBall()
@@ -30,8 +41,8 @@ void Game::ResetBall()
 	ball.SetLocation(Vector3(0.0f, -1.0f, BALL_RADIUS));
 	ball.SetVelocity(Vector3(0.0f));
 
-	mainCamera.Update(ball.GetLocation());
-	setCamera(mainCamera.calcViewMatrix());
+	//mainCamera.Update(ball.GetLocation());
+	//setCamera(mainCamera.calcViewMatrix());
 	ballThrown = false;
 }
 
@@ -162,8 +173,8 @@ void Game::Update(float dt)
 	}
 
 	ball.Update();
-	mainCamera.Update(ball.GetLocation());
-	setCamera(mainCamera.calcViewMatrix());
+	//mainCamera.Update(ball.GetLocation());
+	//setCamera(mainCamera.calcViewMatrix());
 
 	for (int i = 0; i < 10; i++)
 	{
@@ -217,15 +228,15 @@ void Game::Update(float dt)
 	}
 }
 
-void Game::Render()
-{
-	/*ball.Draw(shader);
-	for (int i = 0; i < 10; i++)
-	{
-		if (true)
-		{
-			pins[i].Draw(shader);
-		}
-	}
-	floor.Draw(shader);*/
-}
+//void Game::Render()
+//{
+//	ball.Draw(shader);
+//	for (int i = 0; i < 10; i++)
+//	{
+//		if (true)
+//		{
+//			pins[i].Draw(shader);
+//		}
+//	}
+//	floor.Draw(shader);
+//}

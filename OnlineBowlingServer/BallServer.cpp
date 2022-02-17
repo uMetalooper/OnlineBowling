@@ -83,6 +83,7 @@ void BallServer::Update()
 					World::sInstance->ResetPlayerIndex();
 					SetLocation(Vector3(0.0f, -2.0f, BALL_RADIUS));
 					SetActive(false);
+					NetworkManagerServer::sInstance->SetStateDirty(GetNetworkId(), EBRS_Pose);
 
 					sRemovedIndex = 0;
 					sLastRemovedIndex = 0;
@@ -102,7 +103,7 @@ void BallServer::Update()
 								{
 									ball->SetLocation(Vector3(0.0f, -1.0f, BALL_RADIUS));
 									ball->SetActive(true);
-
+									NetworkManagerServer::sInstance->SetStateDirty(ball->GetNetworkId(), EBRS_Pose);
 									continue;
 								}
 								ballIdx++;
@@ -125,6 +126,7 @@ void BallServer::Update()
 								float y = rowSep * (row - 1) + 18.0f - sep * 5;
 								ball->SetLocation(Vector3(x, y, 0.1f));
 								ball->SetVelocity(Vector3(0.0f));
+								NetworkManagerServer::sInstance->SetStateDirty(ball->GetNetworkId(), EBRS_Pose);
 
 								ball->SetActive(true);
 								ball->SetIsTouched(false);

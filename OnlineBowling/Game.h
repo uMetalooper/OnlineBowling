@@ -2,6 +2,7 @@ class Game
 {
 public:
 	Game();
+	Game(int inGameId);
 
 	void applyImpulse(glm::vec2 v)
 	{
@@ -13,10 +14,12 @@ public:
 
 	void Update(float dt);
 
-	void Render();
+	//void Render();
 
 private:
-	Camera mainCamera;
+	int mGameId;
+	float mGameOffsetX;
+	//Camera mainCamera;
 
 	Ball ball;
 	bool ballThrown;
@@ -27,7 +30,7 @@ private:
 
 	Floor floor;
 
-	Shader shader;
+	//Shader shader;
 
 	void ResetBall();
 	void ResetPins();
@@ -37,10 +40,10 @@ private:
 
 	bool CheckBound(Ball b);
 
-	void setCamera(glm::mat4 view)
+	/*void setCamera(glm::mat4 view)
 	{
 		shader.setMat4("view", view);
-	}
+	}*/
 
 	// gameplay
 	unsigned int playerIndex;
