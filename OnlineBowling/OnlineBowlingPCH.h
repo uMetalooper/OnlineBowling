@@ -1,3 +1,5 @@
+#define BALL_RADIUS (0.1f)
+
 // Common
 #include <map>
 #include <string>

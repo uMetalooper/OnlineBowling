@@ -16,6 +16,9 @@ public:
 
 	virtual uint32_t GetAllStateMask()	const { return 0; }
 
+	//return whether to keep processing collision
+	virtual bool	HandleCollisionWithBall(Ball* inBall) { (void)inBall; return true; }
+
 	virtual void	Update() {}
 	virtual void	HandleDying() {}
 
@@ -24,6 +27,9 @@ public:
 
 	const Vector3&  GetLocation()				const { return mLocation; }
 		void		SetLocation(const Vector3& inLocation) { mLocation = inLocation; }
+
+		float		GetCollisionRadius()		const { return mCollisionRadius; }
+		void		SetCollisionRadius(float inRadius) { mCollisionRadius = inRadius; }
 
 	const Vector3&  GetColor()					const { return mColor; }
 		void		SetColor(const Vector3& inColor) { mColor = inColor; }
@@ -44,6 +50,8 @@ private:
 
 	Vector3 mLocation;
 	Vector3 mColor;
+
+	float											mCollisionRadius;
 
 	int mIndexInWorld;
 

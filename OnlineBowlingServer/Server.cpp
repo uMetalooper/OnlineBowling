@@ -46,10 +46,26 @@ void Server::HandleNewClient(ClientProxyPtr inClientProxy)
 
 void Server::HandleNewGame(ClientProxyPtr inClientAProxy, ClientProxyPtr inClientBProxy)
 {
+	int playerAId = inClientAProxy->GetPlayerId();
+	BallPtr ballA = std::static_pointer_cast<Ball>(GameObjectRegistry::sInstance->CreateGameObject('BALL'));
+	//cat->SetColor(ScoreBoardManager::sInstance->GetEntry(inPlayerId)->GetColor());
+	ballA->SetPlayerId(playerAId);
+	ballA->SetLocation(Vector3(0.0f, -1.0f, 0.1f));
+	ballA->SetVelocity(Vector3(0.0f));
+
+	int playerBId = inClientBProxy->GetPlayerId();
+	BallPtr ballB = std::static_pointer_cast<Ball>(GameObjectRegistry::sInstance->CreateGameObject('BALL'));
+	//cat->SetColor(ScoreBoardManager::sInstance->GetEntry(inPlayerId)->GetColor());
+	ballB->SetPlayerId(playerBId);
+	ballB->SetLocation(Vector3(0.0f, -2.0f, 0.1f));
+	ballB->SetVelocity(Vector3(0.0f));
+
 	FloorPtr floor = std::static_pointer_cast<Floor>(GameObjectRegistry::sInstance->CreateGameObject('FLOO'));
 	floor->SetLocation(Vector3(0.0f, 9.0f, 0.0f));
 	floor->SetSize(Vector3(1.0f, 18.0f, 1.0f));
 	floor->SetColor(Vector3(1.0f, 0.0f, 0.0f));
+
+	SpawnPinsForNewGame();
 }
 
 void Server::HandleLostClient(ClientProxyPtr inClientProxy)
@@ -91,7 +107,33 @@ void Server::SpawnBallForPlayer(int inPlayerId)
 	BallPtr ball = std::static_pointer_cast<Ball>(GameObjectRegistry::sInstance->CreateGameObject('BALL'));
 	//cat->SetColor(ScoreBoardManager::sInstance->GetEntry(inPlayerId)->GetColor());
 	ball->SetPlayerId(inPlayerId);
-	//gotta pick a better spawn location than this...
-	ball->SetLocation(Vector3(0.0f, 0.0f, 0.0f));
+	ball->SetLocation(Vector3(0.0f, -1.0f, 0.1f));
 	ball->SetVelocity(Vector3(0.0f));
+}
+
+void Server::SpawnPinsForNewGame()
+{
+	const Vector3 white(1.0f);
+
+	constexpr float sep = 0.25;
+	constexpr float rowSep = sep * 0.866;
+	for (int i = 0; i < 10; i++)
+	{
+		// reset color
+		BallPtr pin = std::static_pointer_cast<Ball>(GameObjectRegistry::sInstance->CreateGameObject('BALL'));
+		pin->SetColor(white);
+
+		// reset position
+		int row = 1;
+		int rowIndex = i + 1;
+		while (rowIndex > row)
+		{
+			rowIndex -= row;
+			row++;
+		}
+		float x = (((row - 1) * sep) / 2.0f) - (sep * (row - rowIndex));
+		float y = rowSep * (row - 1) + 18.0f - sep * 5;
+		pin->SetLocation(Vector3(x, y, 0.1f));
+		pin->SetVelocity(Vector3(0.0f));
+	}
 }

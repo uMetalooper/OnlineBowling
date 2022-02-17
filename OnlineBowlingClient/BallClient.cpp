@@ -24,10 +24,12 @@ void BallClient::Read(InputMemoryBitStream& inInputStream)
 	{
 		inInputStream.Read(replicatedVelocity.x);
 		inInputStream.Read(replicatedVelocity.y);
+		inInputStream.Read(replicatedVelocity.z);
 		SetVelocity(replicatedVelocity);
 
 		inInputStream.Read(replicatedLocation.x);
 		inInputStream.Read(replicatedLocation.y);
+		inInputStream.Read(replicatedLocation.z);
 		SetLocation(replicatedLocation);
 
 		readState |= EBRS_Pose;

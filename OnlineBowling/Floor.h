@@ -24,6 +24,8 @@ public:
 
 	virtual uint32_t	Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyState) const override;
 
+	virtual bool HandleCollisionWithBall(Ball* inBall) override;
+
 private:
 	Vector3 mSize;
 };

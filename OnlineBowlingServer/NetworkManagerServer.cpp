@@ -93,8 +93,8 @@ void NetworkManagerServer::HandlePacketFromNewClient(InputMemoryBitStream& inInp
 			mPlayerIdToClientMap[newClientProxy->GetPlayerId()] = newClientProxy;
 
 			// spawn balls for each client
-			static_cast<Server*> (Engine::sInstance.get())->HandleNewClient(PendingClient);
-			static_cast<Server*> (Engine::sInstance.get())->HandleNewClient(newClientProxy);
+			//static_cast<Server*> (Engine::sInstance.get())->HandleNewClient(PendingClient);
+			//static_cast<Server*> (Engine::sInstance.get())->HandleNewClient(newClientProxy);
 			static_cast<Server*> (Engine::sInstance.get())->HandleNewGame(PendingClient, newClientProxy);
 
 			SendStartPacket(PendingClient);

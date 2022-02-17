@@ -36,3 +36,9 @@ uint32_t Floor::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtySta
 	}
 	return writtenState;
 }
+
+bool Floor::HandleCollisionWithBall(Ball* inBall)
+{
+	(void)inBall;
+	return false;
+}

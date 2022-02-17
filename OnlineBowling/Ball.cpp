@@ -7,7 +7,7 @@ const float ALLEY_WIDTH = 1.0f; // 1 meter wide
 const float HALF_ALLEY_WIDTH = 0.5f;
 const float ALLEY_LENGTH = 18.288f; // 18.288 meters long
 
-const float BALL_RADIUS = 0.1;
+//const float BALL_RADIUS = 0.1;
 
 void Ball::Update()
 {
@@ -73,10 +73,12 @@ uint32_t Ball::Write(OutputMemoryBitStream& inOutputStream, uint32_t inDirtyStat
 		Vector3 velocity = mVelocity;
 		inOutputStream.Write(velocity.x);
 		inOutputStream.Write(velocity.y);
+		inOutputStream.Write(velocity.z);
 
 		Vector3 location = GetLocation();
 		inOutputStream.Write(location.x);
 		inOutputStream.Write(location.y);
+		inOutputStream.Write(location.z);
 
 		writtenState |= EBRS_Pose;
 	}

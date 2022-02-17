@@ -12,6 +12,7 @@ public:
 
 	BallPtr	GetBallForPlayer(int inPlayerId);
 	void	SpawnBallForPlayer(int inPlayerId);
+	void SpawnPinsForNewGame();
 
 private:
 	Server();

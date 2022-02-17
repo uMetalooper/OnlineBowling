@@ -3,6 +3,7 @@
 
 GameObject::GameObject() :
 	mIndexInWorld(-1),
+	mCollisionRadius(BALL_RADIUS),
 	mDoesWantToDie(false),
 	mNetworkId(0),
 	mColor(Vector3(1.0f))
