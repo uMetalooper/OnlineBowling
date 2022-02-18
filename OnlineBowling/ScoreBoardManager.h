@@ -42,7 +42,8 @@ public:
 	bool	Write( OutputMemoryBitStream& inOutputStream ) const;
 	bool	Read( InputMemoryBitStream& inInputStream );
 
-	const vector< Entry >&	GetEntries()	const	{ return mEntries; }
+	const vector< Entry >& GetEntries()	const { return mEntries; }
+	void SortEntriesByScore();
 
 private:
 

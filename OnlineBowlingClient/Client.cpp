@@ -112,6 +112,16 @@ Client::Client()
 	InputManager::StaticInit();
 
 	mState = Client::EClientState::ECS_Lobby;
+	string name = StringUtils::GetCommandLineArg(1);
+	if (name != "")
+	{
+		mState = Client::EClientState::ECS_Queuing;
+		mPlayerName = name;
+		GLFWwindow* window = RenderManager::sInstance->GetMainWindow();
+		glfwSetCharCallback(window, NULL);
+		glfwSetKeyCallback(window, NULL);
+		NetworkManagerClient::sInstance->SetName(mPlayerName);
+	}
 
 	glfwSetCharCallback(RenderManager::sInstance->GetMainWindow(), character_callback);
 	glfwSetKeyCallback(RenderManager::sInstance->GetMainWindow(), key_callback);
@@ -225,7 +235,7 @@ void Client::DoFrame()
 		for (const auto& entry : ScoreBoardManager::sInstance->GetEntries())
 		{
 			TextRenderer::sInstance->RenderText(
-				entry.GetFormattedNameScore(), 
+				entry.GetFormattedNameScore(),
 				ScoreBoardOriginX,
 				ScoreBoardOriginY,
 				1.0, entry.GetColor());

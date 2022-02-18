@@ -56,8 +56,8 @@ void RenderManager::Render()
 		{
 			if (ball->GetPlayerId() == NetworkManagerClient::sInstance->GetPlayerId())
 			{
-				Vector3 targetPos = Vector3(0.0f, ball->GetLocation().y + 2.0f, 0.0f);  // in front of the ball 2m
-				Vector3 cameraPos = Vector3(0.0f, ball->GetLocation().y - 2.0f, 2.0f);  // behind the ball 2m, above 2m
+				Vector3 targetPos = Vector3(ball->GetLocation().x, ball->GetLocation().y + 2.0f, 0.0f);  // in front of the ball 2m
+				Vector3 cameraPos = Vector3(ball->GetLocation().x, ball->GetLocation().y - 2.0f, 2.0f);  // behind the ball 2m, above 2m
 				Vector3 up = glm::vec3(0.0f, 0.0f, 1.0f);
 				glm::mat4 view = glm::lookAt(cameraPos, targetPos, up);
 				mShader.use();
