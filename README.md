@@ -53,4 +53,4 @@ How do we gather different people on the internet into one single game? I have n
 at first but I found this gem [Multiplayer Game Programming](https://www.amazon.co.uk/Multiplayer-Game-Programming-Architecting-Networked/dp/0134034309).
 I just wanted to say thank you to [Sanjay Madhav](https://www.amazon.co.uk/Sanjay-Madhav/e/B00D9FUNHI?ref_=dbs_p_pbk_r00_abau_000000)
 and [Josh Glazer](https://www.amazon.co.uk/Josh-Glazer/e/B017FXHMRI?ref_=dbs_p_pbk_r00_abau_000000).
-Without this book, I couldn't finish my assignment on time and thinking I'm stupid 😅.
+Without this book, I would fail this module and think I'm stupid 😅.
